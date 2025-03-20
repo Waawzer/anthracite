@@ -79,9 +79,9 @@ export default function Footer() {
               À propos
             </h3>
             <p className="text-secondary text-sm mb-4 max-w-md">
-              Anthracite Applications est une agence de développement web
-              avant-gardiste, spécialisée dans la création d&apos;expériences
-              web immersives et performantes.
+              Anthracite Applications est le site d&apos;un free-lance en
+              développement web avant-gardiste, spécialisé dans la création
+              d&apos;expériences web immersives et performantes.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((link) => (
@@ -132,13 +132,13 @@ export default function Footer() {
           >
             <h3 className="text-lg font-semibold text-primary mb-4">Contact</h3>
             <address className="not-italic">
-              <p className="text-secondary text-sm mb-2">Paris, France</p>
+              <p className="text-secondary text-sm mb-2">Grenoble, France</p>
               <p className="text-secondary text-sm mb-2">
                 <a
                   href="mailto:contact@anthracite-applications.com"
                   className="hover:text-accent transition-colors"
                 >
-                  contact@anthracite-applications.com
+                  contact@anthracite.app
                 </a>
               </p>
               <p className="text-secondary text-sm">
@@ -146,7 +146,7 @@ export default function Footer() {
                   href="tel:+33123456789"
                   className="hover:text-accent transition-colors"
                 >
-                  +33 1 23 45 67 89
+                  +33 6 31 15 67 84
                 </a>
               </p>
             </address>

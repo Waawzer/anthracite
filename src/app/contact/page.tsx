@@ -100,7 +100,7 @@ export default function ContactPage() {
                               href="tel:+33123456789"
                               className="hover:text-accent transition-colors"
                             >
-                              +33 1 23 45 67 89
+                              +33 6 31 15 67 84
                             </a>
                           </p>
                         </div>
@@ -133,7 +133,7 @@ export default function ContactPage() {
                           <h3 className="text-lg font-semibold text-primary mb-1">
                             Adresse
                           </h3>
-                          <p className="text-secondary">Paris, France</p>
+                          <p className="text-secondary">Grenoble, France</p>
                         </div>
                       </div>
                     </div>
@@ -143,8 +143,8 @@ export default function ContactPage() {
                         À partir de 200€
                       </h3>
                       <p className="text-secondary mb-4">
-                        Investissez dans votre présence en ligne avec une
-                        solution moderne et performante.
+                        Améliorez votre présence en ligne avec une solution
+                        moderne et performante.
                       </p>
                       <div className="flex gap-2">
                         <div className="w-1/3 h-1 bg-accent/30 rounded-full"></div>
@@ -170,8 +170,7 @@ export default function ContactPage() {
 
               <div className="text-center mt-12 text-secondary">
                 <p>
-                  Nous répondons généralement dans un délai de 24 heures
-                  ouvrées.
+                  Je réponds généralement dans un délai de 24 heures ouvrées.
                 </p>
               </div>
             </div>

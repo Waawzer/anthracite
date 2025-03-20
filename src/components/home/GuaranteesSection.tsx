@@ -109,8 +109,8 @@ export default function GuaranteesSection() {
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16">
-            Nous nous engageons à fournir des services de la plus haute qualité,
-            avec une attention particulière aux détails.
+            Les récentes avancées en IA permettent de vous proposer un service
+            de très haute qualité pour un prix abordable.
           </p>
         </RevealOnScroll>
 
