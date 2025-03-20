@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Float, PresentationControls } from "@react-three/drei";
 import { Group } from "three";
-import { motion } from "framer-motion-3d";
 import { MotionConfig } from "framer-motion";
 
 function GeometricObjects() {
   const group = useRef<Group>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [tapped, setTapped] = useState<number | null>(null);
 
   // Animation loop
   useFrame((state) => {
@@ -23,14 +24,24 @@ function GeometricObjects() {
     group.current.rotation.y = mouseX * 0.2;
   });
 
+  // Helper function to handle hover and tap effects
+  const getScale = (index: number) => {
+    if (tapped === index) return 0.9;
+    if (hovered === index) return 1.1;
+    return 1;
+  };
+
   return (
     <group ref={group}>
       {/* Floating cubes with different sizes and positions */}
       <Float speed={4} rotationIntensity={0.2} floatIntensity={0.5}>
-        <motion.mesh
+        <mesh
           position={[0, 0, 0]}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          scale={getScale(0)}
+          onPointerOver={() => setHovered(0)}
+          onPointerOut={() => setHovered(null)}
+          onPointerDown={() => setTapped(0)}
+          onPointerUp={() => setTapped(null)}
         >
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial
@@ -38,15 +49,18 @@ function GeometricObjects() {
             roughness={0.1}
             metalness={0.8}
           />
-        </motion.mesh>
+        </mesh>
       </Float>
 
       <Float speed={2.5} rotationIntensity={0.5} floatIntensity={0.3}>
-        <motion.mesh
+        <mesh
           position={[-2, 1, -1]}
           rotation={[0.5, 0.5, 0]}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          scale={getScale(1)}
+          onPointerOver={() => setHovered(1)}
+          onPointerOut={() => setHovered(null)}
+          onPointerDown={() => setTapped(1)}
+          onPointerUp={() => setTapped(null)}
         >
           <dodecahedronGeometry args={[0.6, 0]} />
           <meshStandardMaterial
@@ -54,15 +68,18 @@ function GeometricObjects() {
             roughness={0.3}
             metalness={0.6}
           />
-        </motion.mesh>
+        </mesh>
       </Float>
 
       <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.2}>
-        <motion.mesh
+        <mesh
           position={[2, -1, 1]}
           rotation={[0.2, 0.3, 0]}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          scale={getScale(2)}
+          onPointerOver={() => setHovered(2)}
+          onPointerOut={() => setHovered(null)}
+          onPointerDown={() => setTapped(2)}
+          onPointerUp={() => setTapped(null)}
         >
           <octahedronGeometry args={[0.8, 0]} />
           <meshStandardMaterial
@@ -70,15 +87,18 @@ function GeometricObjects() {
             roughness={0.2}
             metalness={0.7}
           />
-        </motion.mesh>
+        </mesh>
       </Float>
 
       <Float speed={3} rotationIntensity={0.6} floatIntensity={0.4}>
-        <motion.mesh
+        <mesh
           position={[1, 2, -2]}
           rotation={[0.4, 0.2, 0]}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          scale={getScale(3)}
+          onPointerOver={() => setHovered(3)}
+          onPointerOut={() => setHovered(null)}
+          onPointerDown={() => setTapped(3)}
+          onPointerUp={() => setTapped(null)}
         >
           <tetrahedronGeometry args={[0.7, 0]} />
           <meshStandardMaterial
@@ -86,7 +106,7 @@ function GeometricObjects() {
             roughness={0.2}
             metalness={0.5}
           />
-        </motion.mesh>
+        </mesh>
       </Float>
     </group>
   );
