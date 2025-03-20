@@ -10,6 +10,14 @@ import {
 } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
 
+// Define the shape types for the card bottom shapes
+interface CardShape {
+  type: "circle" | "square" | "triangle";
+  size: number;
+  color: string;
+  position: number; // Position from left (0-100%)
+}
+
 interface ServiceData {
   title: string;
   description: string;
@@ -17,6 +25,75 @@ interface ServiceData {
   icon: React.ReactNode;
   delay: number;
   id: string;
+  shapes?: CardShape[]; // Add shapes to service data
+}
+
+// Component for rendering the geometric shapes at the bottom of each card
+function CardBottomShapes({
+  shapes,
+  isVisible,
+}: {
+  shapes?: CardShape[];
+  isVisible: boolean;
+}) {
+  if (!isVisible || !shapes || shapes.length === 0) return null;
+
+  // Only use the first shape to ensure uniqueness per card
+  const shape = shapes[0];
+
+  let shapeElement;
+
+  if (shape.type === "circle") {
+    shapeElement = (
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: `${shape.size}px`,
+          height: `${shape.size}px`,
+          backgroundColor: shape.color,
+          left: `${shape.position}%`,
+          bottom: `28px`,
+          transform: "translateX(-50%)",
+        }}
+      />
+    );
+  } else if (shape.type === "square") {
+    shapeElement = (
+      <div
+        className="absolute"
+        style={{
+          width: `${shape.size}px`,
+          height: `${shape.size}px`,
+          backgroundColor: shape.color,
+          left: `${shape.position}%`,
+          bottom: `28px`,
+          transform: "translateX(-50%) rotate(45deg)",
+        }}
+      />
+    );
+  } else if (shape.type === "triangle") {
+    shapeElement = (
+      <div
+        className="absolute"
+        style={{
+          width: 0,
+          height: 0,
+          borderLeft: `${shape.size / 2}px solid transparent`,
+          borderRight: `${shape.size / 2}px solid transparent`,
+          borderBottom: `${shape.size}px solid ${shape.color}`,
+          left: `${shape.position}%`,
+          bottom: `28px`,
+          transform: "translateX(-50%)",
+        }}
+      />
+    );
+  }
+
+  return (
+    <div className="absolute bottom-0 left-0 w-full h-12 overflow-visible">
+      {shapeElement}
+    </div>
+  );
 }
 
 function ServiceCard({
@@ -385,6 +462,9 @@ function ServiceCard({
             </ul>
           </motion.div>
         </motion.div>
+
+        {/* Geometric shapes at bottom of card - only visible when not expanded */}
+        <CardBottomShapes shapes={service.shapes} isVisible={!isExpanded} />
       </motion.div>
     </RevealOnScroll>
   );
@@ -448,6 +528,7 @@ export default function ServicesSection() {
         </svg>
       ),
       delay: 0.1,
+      shapes: [{ type: "circle", size: 22, color: "#8a2be2", position: 50 }],
     },
     {
       id: "applications-web",
@@ -479,6 +560,7 @@ export default function ServicesSection() {
         </svg>
       ),
       delay: 0.2,
+      shapes: [{ type: "triangle", size: 26, color: "#00bfff", position: 50 }],
     },
     {
       id: "e-commerce",
@@ -510,6 +592,7 @@ export default function ServicesSection() {
         </svg>
       ),
       delay: 0.3,
+      shapes: [{ type: "square", size: 18, color: "#8a2be2", position: 50 }],
     },
   ];
 
