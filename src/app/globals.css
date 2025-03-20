@@ -1,8 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #0a0a0a;
+  --anthracite-900: #1a1a1a;
+  --anthracite-800: #262626;
+  --anthracite-700: #333333;
+  --anthracite-600: #404040;
+  --anthracite-500: #525252;
+  --anthracite-400: #737373;
+  --anthracite-300: #a3a3a3;
+  --anthracite-200: #d4d4d4;
+  --anthracite-100: #e5e5e5;
+  --white: #ffffff;
+  --accent-cyan: #00bfff;
+  --accent-violet: #8a2be2;
+
+  /* Default light mode */
+  --background: var(--white);
+  --foreground: var(--anthracite-900);
+  --primary: var(--anthracite-900);
+  --secondary: var(--anthracite-700);
+  --muted: var(--anthracite-400);
+  --accent: var(--accent-cyan);
+  --accent-secondary: var(--accent-violet);
+  --border: var(--anthracite-200);
+  --card-bg: var(--white);
+  --card-border: var(--anthracite-200);
+
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 12, 12, 17;
+  --background-end-rgb: 17, 17, 24;
+  --accent-color: 138, 43, 226; /* violet */
+  --accent-secondary-color: 0, 191, 255; /* cyan */
+  --primary-color: 240, 240, 255;
+  --secondary-color: 190, 190, 210;
+  --border-color: 45, 45, 60;
+  --muted-color: 140, 140, 160;
 }
 
 @theme inline {
@@ -14,13 +47,259 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--black);
+    --foreground: var(--anthracite-100);
+    --primary: var(--white);
+    --secondary: var(--anthracite-300);
+    --muted: var(--anthracite-400);
+    --accent: var(--accent-cyan);
+    --accent-secondary: var(--accent-violet);
+    --border: var(--anthracite-700);
+    --card-bg: var(--anthracite-800);
+    --card-border: var(--anthracite-700);
+
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 12, 12, 17;
+    --background-end-rgb: 17, 17, 24;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    )
+    fixed;
+  color: rgb(var(--foreground-rgb));
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom cursor styles */
+.cursor-hover {
+  cursor: pointer;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animation base classes */
+.appear-element {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.appear-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Utility classes for reveal animations */
+.reveal-delay-100 {
+  transition-delay: 100ms;
+}
+.reveal-delay-200 {
+  transition-delay: 200ms;
+}
+.reveal-delay-300 {
+  transition-delay: 300ms;
+}
+.reveal-delay-400 {
+  transition-delay: 400ms;
+}
+.reveal-delay-500 {
+  transition-delay: 500ms;
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .appear-element {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Ajout de styles pour le scroll snap */
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Améliorations pour le défilement des sections */
+section:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-container {
+    scroll-snap-type: none;
+  }
+
+  section {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+}
+
+/* Ajout de gradients et d'effets de couleur */
+.gradient-accent {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--accent-color), 0.8),
+    rgba(var(--accent-secondary-color), 0.8)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow {
+  filter: drop-shadow(0 0 15px rgba(var(--accent-color), 0.5));
+}
+
+.glow-cyan {
+  filter: drop-shadow(0 0 15px rgba(var(--accent-secondary-color), 0.5));
+}
+
+.border-glow {
+  box-shadow: 0 0 15px rgba(var(--accent-color), 0.3);
+}
+
+/* Animations supplémentaires */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-delayed {
+  animation: float 6s ease-in-out 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.pulsing {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+/* Styles d'arrière-plan pour les sections */
+.bg-grid {
+  background-image: linear-gradient(
+      rgba(var(--border-color), 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(var(--border-color), 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(
+    rgba(var(--accent-color), 0.1) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+/* Patterns */
+.bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.bg-noise-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Animation utilities */
+.pulsing {
+  animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+/* Glow effects */
+.border-glow {
+  box-shadow: 0 0 15px rgba(153, 102, 255, 0.2);
+}
+
+.glow {
+  text-shadow: 0 0 10px rgba(153, 102, 255, 0.5);
+}
+
+/* Background effects */
+.bg-dots {
+  background-image: radial-gradient(
+    rgba(153, 102, 255, 0.2) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
 }

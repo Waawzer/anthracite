@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anthracite Applications - Site Vitrine
 
-## Getting Started
+Site vitrine de haute qualité pour "Anthracite Applications", une agence de développement web avant-gardiste. Le site sert de démonstration concrète des compétences techniques à travers un design ultra-moderne, épuré et élégant, inspiré par l'esthétique Apple, avec une palette de couleurs sophistiquée centrée sur l'anthracite.
 
-First, run the development server:
+## Technologies utilisées
+
+- **Next.js**: Framework React pour le rendu côté serveur et la génération de sites statiques
+- **TypeScript**: Pour un typage statique et une meilleure expérience de développement
+- **Tailwind CSS**: Framework CSS utilitaire pour un design responsive et rapide
+- **Framer Motion**: Bibliothèque d'animations pour React
+- **Three.js** avec **React Three Fiber**: Pour les éléments 3D légers
+- **GSAP**: Pour les animations et transitions séquentielles avancées
+
+## Animations et interactions
+
+Le site intègre de nombreuses animations et interactions avancées :
+
+- Animation de chargement initial avec séquence d'apparition fluide
+- Animations de défilement avec effets de parallaxe multi-couches
+- Effets de révélation progressifs au défilement
+- Curseur personnalisé qui réagit au contexte
+- Effets de hover sophistiqués sur tous les éléments interactifs
+- Micro-animations sur les icônes et les éléments d'interface
+- Transitions fluides entre les pages et les sections
+
+## Structure du site
+
+1. **Page d'accueil** avec quatre sections principales
+
+   - **Section Hero**: Présentation de l'agence avec animations et éléments visuels dynamiques
+   - **Section Services**: Présentation détaillée des trois services principaux
+   - **Section Réalisations**: Prévisualiseur de sites web avec transitions fluides
+   - **Section Garanties**: Présentation des garanties et valeurs avec compteurs animés
+
+2. **Page Contact**
+   - Formulaire avec animation progressive des champs
+   - Validation interactive des entrées
+   - Animation de soumission du formulaire
+
+## Installation et développement
+
+### Prérequis
+
+- Node.js 16.8 ou supérieur
+- npm ou yarn
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Cloner le dépôt
+git clone https://github.com/votre-nom/anthracite-applications.git
+cd anthracite-applications
+
+# Installer les dépendances
+npm install
+# ou
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Développement
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Lancer le serveur de développement
+npm run dev
+# ou
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Le site sera accessible à l'adresse http://localhost:3000.
 
-## Learn More
+### Production
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Construire le site pour la production
+npm run build
+# ou
+yarn build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Lancer le serveur de production
+npm run start
+# ou
+yarn start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Optimisations
 
-## Deploy on Vercel
+- Animations conditionnées aux préférences utilisateur (réduction du mouvement)
+- Chargement progressif et optimisé des ressources
+- Dégradation élégante sur les appareils moins puissants
+- Version mobile avec animations adaptées
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Licence
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ce projet est sous licence MIT.
