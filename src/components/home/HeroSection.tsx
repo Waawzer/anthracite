@@ -11,6 +11,8 @@ import {
 } from "framer-motion";
 import GeometricScene from "../3d/GeometricScene";
 import ParticleBackground from "../animations/ParticleBackground";
+import GeometricShapes from "../animations/GeometricShapes";
+// import BasicGeometric from "../3d/BasicGeometric";
 
 const rotatingWords = [
   "aux tendances actuelles",
@@ -20,10 +22,41 @@ const rotatingWords = [
   "accessible et responsive",
 ];
 
+// Interface pour les particules
+interface Particle {
+  width: number;
+  height: number;
+  top: string;
+  left: string;
+  duration: number;
+  delay: number;
+  distance: number;
+}
+
 export default function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  // Effect pour initialiser le drapeau client-only après le montage
+  useEffect(() => {
+    setMounted(true);
+
+    // Générer les particules côté client uniquement
+    const newParticles = Array.from({ length: 20 }).map(() => ({
+      width: Math.random() * 4 + 1,
+      height: Math.random() * 4 + 1,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      duration: Math.random() * 10 + 10,
+      delay: Math.random() * 5,
+      distance: Math.random() * 100 + 50,
+    }));
+
+    setParticles(newParticles);
+  }, []);
 
   // Mouse parallax effect
   useEffect(() => {
@@ -76,10 +109,13 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       id="hero"
     >
+      {/* Formes géométriques au premier plan */}
+      {mounted && <GeometricShapes />}
+
       {/* Darkened overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/95 z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/85 z-10"></div>
       <motion.div
-        className="absolute inset-0 bg-black/60 z-[5]"
+        className="absolute inset-0 bg-black/50 z-[5]"
         style={{ opacity: backgroundOpacity }}
       ></motion.div>
 
@@ -88,13 +124,25 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-full"
         style={{ y: backgroundY }}
       >
-        <motion.div style={{ filter: "brightness(0.7) contrast(1.2)" }}>
-          <ParticleBackground />
-          <GeometricScene />
+        <motion.div style={{ filter: "brightness(1.0) contrast(1.4)" }}>
+          {mounted && (
+            <>
+              <ParticleBackground />
+              <div
+                className="relative z-[2]"
+                style={{
+                  filter: "drop-shadow(0 0 30px rgba(147, 51, 234, 0.5))",
+                  mixBlendMode: "screen",
+                }}
+              >
+                <GeometricScene />
+              </div>
+            </>
+          )}
 
           {/* Added center glow */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-[60%] h-[60%] rounded-full bg-gradient-radial from-accent/10 via-primary/5 to-transparent blur-[100px] opacity-40"></div>
+            <div className="w-[60%] h-[60%] rounded-full bg-gradient-radial from-accent/20 via-primary/10 to-transparent blur-[100px] opacity-60"></div>
           </div>
 
           {/* Additional particle layer */}
@@ -106,27 +154,28 @@ export default function HeroSection() {
               transition={{ duration: 2 }}
             >
               <div className="absolute inset-0 overflow-hidden">
-                {Array.from({ length: 20 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute rounded-full bg-white/5"
-                    style={{
-                      width: Math.random() * 4 + 1,
-                      height: Math.random() * 4 + 1,
-                      top: `${Math.random() * 100}%`,
-                      left: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                      y: [0, Math.random() * 100 + 50],
-                      opacity: [0, 0.8, 0],
-                    }}
-                    transition={{
-                      duration: Math.random() * 10 + 10,
-                      repeat: Infinity,
-                      delay: Math.random() * 5,
-                    }}
-                  />
-                ))}
+                {mounted &&
+                  particles.map((particle, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute rounded-full bg-white/5"
+                      style={{
+                        width: particle.width,
+                        height: particle.height,
+                        top: particle.top,
+                        left: particle.left,
+                      }}
+                      animate={{
+                        y: [0, particle.distance],
+                        opacity: [0, 0.8, 0],
+                      }}
+                      transition={{
+                        duration: particle.duration,
+                        repeat: Infinity,
+                        delay: particle.delay,
+                      }}
+                    />
+                  ))}
               </div>
             </motion.div>
           </div>
