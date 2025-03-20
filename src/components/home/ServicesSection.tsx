@@ -24,11 +24,13 @@ function ServiceCard({
   isExpanded,
   mouseX,
   mouseY,
+  onToggle,
 }: {
   service: ServiceData;
   isExpanded: boolean;
   mouseX: React.MutableRefObject<number>;
   mouseY: React.MutableRefObject<number>;
+  onToggle: (serviceId: string) => void;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
@@ -143,18 +145,19 @@ function ServiceCard({
   const glowY = useTransform(yMotionValue, [-0.5, 0.5], ["30%", "70%"]);
 
   return (
-    <RevealOnScroll delay={service.delay} className="group relative h-full">
+    <RevealOnScroll delay={service.delay} className="group relative">
       <motion.div
         ref={cardRef}
         className={`flex flex-col rounded-xl overflow-hidden bg-card-bg border ${
           isExpanded ? "border-accent/40" : "border-card-border"
-        } shadow-lg transition-all duration-500 h-full p-8 relative`}
+        } shadow-lg transition-all duration-500 relative p-8`}
         style={{
           rotateX: springRotateX,
           rotateY: springRotateY,
           transformStyle: "preserve-3d",
           transform: "perspective(1200px)",
           boxShadow: `${shadowX.get()} ${shadowY.get()} ${shadowBlur.get()} rgba(0, 0, 0, 0.1)`,
+          minHeight: isExpanded ? "none" : "320px",
         }}
         animate={controls}
         whileHover={{ scale: isExpanded ? 1.01 : 1.005 }}
@@ -169,6 +172,50 @@ function ServiceCard({
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
       >
+        {/* Toggle button */}
+        <motion.div
+          className="absolute top-4 right-4 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 text-accent cursor-pointer"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent event from bubbling to parent
+            onToggle(service.id);
+          }}
+        >
+          {isExpanded ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 12H4"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          )}
+        </motion.div>
+
         {/* Enhanced glow effect */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none"
@@ -231,7 +278,10 @@ function ServiceCard({
             marginTop: isExpanded ? "1.5rem" : "0rem",
           }}
           className="overflow-hidden z-10"
-          style={{ pointerEvents: isExpanded ? "auto" : "none" }}
+          style={{
+            pointerEvents: isExpanded ? "auto" : "none",
+            position: "relative",
+          }}
           transition={{
             height: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
             opacity: { duration: 0.4, delay: isExpanded ? 0.1 : 0 },
@@ -309,7 +359,24 @@ function ServiceCard({
                         strokeLinejoin="round"
                         strokeWidth={2}
                         d="M5 13l4 4L19 7"
+                        className="text-gradient"
+                        style={{
+                          stroke: "url(#checkGradient)",
+                        }}
                       />
+                    </svg>
+                    <svg width="0" height="0" className="absolute">
+                      <linearGradient
+                        id="checkGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%"
+                      >
+                        <stop offset="0%" stopColor="#9333ea" />
+                        <stop offset="50%" stopColor="#4f46e5" />
+                        <stop offset="100%" stopColor="#0ea5e9" />
+                      </linearGradient>
                     </svg>
                   </motion.div>
                   <span className="text-secondary">{item}</span>
@@ -324,7 +391,9 @@ function ServiceCard({
 }
 
 export default function ServicesSection() {
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [expandedServiceId, setExpandedServiceId] = useState<string | null>(
+    null
+  );
 
   // Mouse tracking
   const mouseX = useRef(0);
@@ -340,8 +409,12 @@ export default function ServicesSection() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const toggleServiceDetails = () => {
-    setIsExpanded((prev) => !prev);
+  const toggleServiceDetails = (serviceId: string) => {
+    setExpandedServiceId((prev) => (prev === serviceId ? null : serviceId));
+  };
+
+  const toggleAllServices = () => {
+    setExpandedServiceId((prev) => (prev ? null : "all"));
   };
 
   const services: ServiceData[] = [
@@ -455,6 +528,28 @@ export default function ServicesSection() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  useEffect(() => {
+    const handleOpenService = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { serviceId } = customEvent.detail;
+      setExpandedServiceId(serviceId);
+    };
+
+    const handleCloseService = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { serviceId } = customEvent.detail;
+      setExpandedServiceId((prev) => (prev === serviceId ? null : prev));
+    };
+
+    window.addEventListener("openService", handleOpenService);
+    window.addEventListener("closeService", handleCloseService);
+
+    return () => {
+      window.removeEventListener("openService", handleOpenService);
+      window.removeEventListener("closeService", handleCloseService);
+    };
+  }, []);
+
   return (
     <section
       id="services"
@@ -504,24 +599,34 @@ export default function ServicesSection() {
           </motion.p>
         </RevealOnScroll>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 items-start auto-rows-auto">
           {services.map((service) => (
-            <ServiceCard
+            <div
               key={service.id}
-              service={service}
-              isExpanded={isExpanded}
-              mouseX={mouseX}
-              mouseY={mouseY}
-            />
+              onClick={() => toggleServiceDetails(service.id)}
+              className="cursor-pointer"
+              style={{ height: "auto" }}
+            >
+              <ServiceCard
+                service={service}
+                isExpanded={
+                  expandedServiceId === service.id ||
+                  expandedServiceId === "all"
+                }
+                mouseX={mouseX}
+                mouseY={mouseY}
+                onToggle={toggleServiceDetails}
+              />
+            </div>
           ))}
         </div>
 
         {/* Centralized toggle button for all services */}
         <div className="flex justify-center mt-12">
           <motion.button
-            onClick={toggleServiceDetails}
+            onClick={toggleAllServices}
             className={`flex items-center justify-center gap-2 px-8 py-3 rounded-full text-base font-medium transition-all duration-300 ${
-              isExpanded
+              expandedServiceId === "all"
                 ? "bg-accent/20 text-white hover:bg-accent/30"
                 : "bg-card-bg text-accent hover:bg-accent/5"
             } border border-accent/20 shadow-lg`}
@@ -532,10 +637,12 @@ export default function ServicesSection() {
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             <span>
-              {isExpanded ? "Masquer les détails" : "Afficher tous les détails"}
+              {expandedServiceId === "all"
+                ? "Masquer les détails"
+                : "Afficher tous les détails"}
             </span>
             <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
+              animate={{ rotate: expandedServiceId === "all" ? 180 : 0 }}
               transition={{ duration: 0.5 }}
             >
               <svg

@@ -135,26 +135,36 @@ export default function Header() {
                 className="flex flex-col items-start font-bold tracking-tight relative z-10 py-2"
               >
                 <motion.span
-                  className="text-2xl md:text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/90 group-hover:from-accent group-hover:via-primary group-hover:to-accent-bright transition-all duration-500"
+                  className="text-2xl md:text-3xl bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500 group-hover:from-white group-hover:via-white group-hover:to-white/90 transition-all duration-500"
                   initial={{ x: 0 }}
-                  whileHover={{ x: 5 }}
-                  style={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
+                  whileHover={{ x: 10 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  style={{ textShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
                 >
                   Anthracite
                 </motion.span>
                 <motion.span
-                  className="text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500 group-hover:from-white group-hover:via-white to-white/90 transition-all duration-500 ml-16"
+                  className="text-sm md:text-lg bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500 group-hover:from-white group-hover:via-white group-hover:to-white/90 transition-all duration-500 ml-24"
                   animate={{
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                   }}
-                  transition={{
-                    duration: 15,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
                   initial={{ x: 0 }}
-                  whileHover={{ x: -5 }}
-                  style={{ textShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
+                  whileHover={{ x: -10 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 15,
+                    backgroundPosition: {
+                      duration: 15,
+                      repeat: Infinity,
+                      ease: "linear",
+                    },
+                  }}
+                  style={{
+                    textShadow:
+                      "0 0 20px rgba(147, 51, 234, 0.5), 0 0 30px rgba(79, 70, 229, 0.3)",
+                    filter: "brightness(1.2) contrast(1.1)",
+                  }}
                 >
                   Apps
                 </motion.span>

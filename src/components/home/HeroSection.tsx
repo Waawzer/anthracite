@@ -46,8 +46,8 @@ export default function HeroSection() {
   const springY = useSpring(useMotionValue(0), { stiffness: 50, damping: 20 });
 
   useEffect(() => {
-    springX.set(mousePosition.x * 7);
-    springY.set(mousePosition.y * 4);
+    springX.set(mousePosition.x * 12);
+    springY.set(mousePosition.y * 8);
   }, [mousePosition, springX, springY]);
 
   // Parallax effect for scrolling
@@ -198,7 +198,7 @@ export default function HeroSection() {
           }}
         >
           <motion.h1
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -207,8 +207,8 @@ export default function HeroSection() {
               delay: 0.2,
             }}
             style={{
-              x: useTransform(springX, (v) => v * 3),
-              y: useTransform(springY, (v) => v * 3),
+              x: useTransform(springX, (v) => v * 5),
+              y: useTransform(springY, (v) => v * 5),
               background:
                 "linear-gradient(to right, #9333ea, #4f46e5, #0ea5e9)",
               backgroundClip: "text",
@@ -270,7 +270,7 @@ export default function HeroSection() {
             <AnimatePresence mode="wait">
               <motion.p
                 key={wordIndex}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/70 py-2"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/70 py-2"
                 initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
                 animate={{
                   opacity: 1,
@@ -280,8 +280,8 @@ export default function HeroSection() {
                 exit={{ opacity: 0, y: -30, filter: "blur(10px)" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 style={{
-                  x: useTransform(springX, (v) => v * -4),
-                  y: useTransform(springY, (v) => v * -4),
+                  x: useTransform(springX, (v) => v * -6),
+                  y: useTransform(springY, (v) => v * -6),
                   textShadow:
                     "0 0 30px rgba(255, 255, 255, 0.1), 0 0 60px rgba(255, 255, 255, 0.05)",
                 }}
