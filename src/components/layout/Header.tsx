@@ -135,41 +135,105 @@ export default function Header() {
                 className="flex flex-col items-start font-bold tracking-tight relative z-10 py-2"
               >
                 <motion.span
-                  className="text-2xl md:text-3xl bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500 group-hover:from-white group-hover:via-white group-hover:to-white/90 transition-all duration-500"
+                  className="text-2xl md:text-3xl bg-clip-text text-transparent"
                   initial={{ x: 0 }}
-                  whileHover={{ x: 10 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                  style={{ textShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
-                >
-                  Anthracite
-                </motion.span>
-                <motion.span
-                  className="text-sm md:text-lg bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500 group-hover:from-white group-hover:via-white group-hover:to-white/90 transition-all duration-500 ml-24"
+                  whileHover={{ scale: 1.08, x: 5 }}
                   animate={{
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    textShadow: [
+                      "0 0 15px rgba(6, 182, 212, 0.3)",
+                      "0 0 25px rgba(59, 130, 246, 0.5)",
+                      "0 0 20px rgba(236, 72, 153, 0.4)",
+                      "0 0 15px rgba(6, 182, 212, 0.3)",
+                    ],
                   }}
-                  initial={{ x: 0 }}
-                  whileHover={{ x: -10 }}
                   transition={{
                     type: "spring",
                     stiffness: 400,
                     damping: 15,
                     backgroundPosition: {
-                      duration: 15,
+                      duration: 8,
                       repeat: Infinity,
-                      ease: "linear",
+                      ease: "easeInOut",
+                    },
+                    textShadow: {
+                      duration: 5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
                     },
                   }}
                   style={{
-                    textShadow:
-                      "0 0 20px rgba(147, 51, 234, 0.5), 0 0 30px rgba(79, 70, 229, 0.3)",
-                    filter: "brightness(1.2) contrast(1.1)",
+                    background:
+                      "linear-gradient(to right, #06b6d4, #3b82f6, #ec4899)",
+                    backgroundSize: "200% 200%",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    textShadow: "0 0 25px rgba(6, 182, 212, 0.5)",
+                    filter: "brightness(1.3) contrast(1.2)",
+                  }}
+                >
+                  Anthracite
+                </motion.span>
+                <motion.span
+                  className="text-sm md:text-lg ml-auto -mt-1"
+                  initial={{ opacity: 0.7, rotateZ: 0 }}
+                  whileHover={{
+                    scale: 1.2,
+                    opacity: 1,
+                    rotateZ: [0, -3, 3, 0],
+                  }}
+                  animate={{
+                    y: [0, -3, 0],
+                    rotateZ: [0, -2, 2, 0],
+                  }}
+                  transition={{
+                    scale: {
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 15,
+                    },
+                    y: {
+                      duration: 2.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    },
+                    rotateZ: {
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    },
+                  }}
+                  style={{
+                    background:
+                      "linear-gradient(to right, #ec4899, #8b5cf6, #06b6d4)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    textShadow: "0 0 15px rgba(236, 72, 153, 0.6)",
+                    filter: "brightness(1.4) contrast(1.3)",
+                    fontWeight: "800",
+                    letterSpacing: "0.05em",
                   }}
                 >
                   Apps
                 </motion.span>
               </Link>
-              <motion.div className="absolute -inset-2 bg-gradient-to-r from-purple-600/0 via-purple-600/15 to-blue-500/0 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition duration-500"></motion.div>
+              <motion.div
+                className="absolute -inset-2 rounded-lg opacity-0 group-hover:opacity-100 transition duration-500 z-0 overflow-hidden"
+                whileHover={{ scale: 1.05 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-conic from-[#ec4899] via-[#8b5cf6] to-[#06b6d4] opacity-20"
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                ></motion.div>
+                <div className="absolute inset-0 backdrop-blur-md"></div>
+              </motion.div>
             </motion.div>
 
             {/* Menu Button with glow effect */}

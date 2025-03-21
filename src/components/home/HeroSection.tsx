@@ -351,54 +351,56 @@ export default function HeroSection() {
               ease: [0.22, 1, 0.36, 1],
             }}
             style={{ opacity: buttonOpacity }}
-            className="relative"
+            className="relative flex justify-center"
           >
-            <motion.div
-              className="absolute -inset-1 bg-gradient-to-r from-accent via-purple-500 to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"
-              animate={{
-                opacity: [0.5, 0.8, 0.5],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-            ></motion.div>
-            <motion.a
-              href="#services"
-              className="relative flex items-center justify-center px-6 py-2 bg-background/90 backdrop-blur-sm rounded-full text-base font-medium text-white border border-accent/20 shadow-lg hover:shadow-accent/20 transition duration-300 group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="text-white font-semibold text-base">
-                Découvrir
-              </span>
-              <motion.svg
-                className="ml-2 w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="relative">
+              <motion.div
+                className="absolute -inset-0.5 bg-gradient-to-r from-accent via-purple-500 to-blue-600 rounded-full blur-[3px] opacity-75 group-hover:opacity-100 transition duration-200"
                 animate={{
-                  x: [0, 5, 0],
+                  opacity: [0.5, 0.8, 0.5],
                 }}
                 transition={{
-                  duration: 1.5,
+                  duration: 3,
                   repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "easeInOut",
-                  delay: 1,
+                  repeatType: "reverse",
                 }}
+              ></motion.div>
+              <motion.a
+                href="#services"
+                className="relative flex items-center justify-center px-5 py-2.5 bg-background/90 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-accent/20 shadow-lg hover:shadow-accent/20 transition duration-300 group w-32"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  className="text-accent"
-                ></path>
-              </motion.svg>
-            </motion.a>
+                <span className="text-white font-semibold text-sm">
+                  Découvrir
+                </span>
+                <motion.svg
+                  className="ml-2.5 w-4.5 h-4.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  animate={{
+                    x: [0, 3, 0],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "easeInOut",
+                    delay: 1,
+                  }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    className="text-accent"
+                  ></path>
+                </motion.svg>
+              </motion.a>
+            </div>
           </motion.div>
         </motion.div>
       </div>

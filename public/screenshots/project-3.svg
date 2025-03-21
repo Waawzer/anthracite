@@ -1,0 +1,36 @@
+<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1E24" />
+      <stop offset="100%" stop-color="#2D2D34" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bgGradient)" />
+  
+  <!-- Formes créatives -->
+  <circle cx="330" cy="150" r="40" fill="url(#accentGradient)" opacity="0.7" />
+  <rect x="390" y="110" width="80" height="80" rx="10" fill="url(#accentGradient)" opacity="0.7" transform="rotate(45 430 150)" />
+  <polygon points="470,110 510,150 470,190" fill="url(#accentGradient)" opacity="0.7" />
+  
+  <!-- Titre -->
+  <text x="400" y="240" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#FFFFFF">
+    Agence Creative
+  </text>
+  
+  <!-- Description stylisée -->
+  <rect x="200" y="260" width="400" height="2" fill="url(#accentGradient)" opacity="0.8" />
+  <text x="400" y="290" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#a3a3a3">
+    Expérience immersive avec animations 3D
+  </text>
+  
+  <!-- Bouton stylisé -->
+  <rect x="325" y="320" width="150" height="40" rx="20" fill="url(#accentGradient)" opacity="0.8" />
+  <text x="400" y="345" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#FFFFFF">
+    Voir plus
+  </text>
+</svg> 

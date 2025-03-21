@@ -1,0 +1,32 @@
+<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1E24" />
+      <stop offset="100%" stop-color="#2D2D34" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bgGradient)" />
+  
+  <!-- Illustration stylisée de pain -->
+  <ellipse cx="400" cy="150" rx="70" ry="50" fill="#d4a76a" opacity="0.8" />
+  <ellipse cx="400" cy="150" rx="60" ry="40" fill="#c69c6d" opacity="0.9" />
+  <path d="M 380,130 Q 400,115 420,130" stroke="#8c6d4f" stroke-width="2" fill="none" />
+  <path d="M 380,170 Q 400,185 420,170" stroke="#8c6d4f" stroke-width="2" fill="none" />
+  
+  <!-- Titre -->
+  <text x="400" y="240" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#FFFFFF">
+    Boulangerie Artisanale
+  </text>
+  
+  <!-- Description stylisée -->
+  <rect x="200" y="260" width="400" height="2" fill="#d4a76a" opacity="0.6" />
+  <text x="400" y="290" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#a3a3a3">
+    Tradition et modernité
+  </text>
+  
+  <!-- Bouton stylisé -->
+  <rect x="325" y="320" width="150" height="40" rx="20" fill="#d4a76a" opacity="0.8" />
+  <text x="400" y="345" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#FFFFFF">
+    Découvrir
+  </text>
+</svg> 

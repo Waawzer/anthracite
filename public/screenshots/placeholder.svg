@@ -1,0 +1,10 @@
+<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#1E1E24" />
+  <text x="400" y="225" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#a3a3a3">
+    Capture d'écran non disponible
+  </text>
+  <rect x="300" y="250" width="200" height="40" rx="5" ry="5" fill="none" stroke="#8b5cf6" stroke-width="2" />
+  <text x="400" y="275" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#8b5cf6">
+    Visiter le site
+  </text>
+</svg> 

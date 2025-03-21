@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import { useInView } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
+import { motion } from "framer-motion";
 
 interface CounterProps {
   end: number;
@@ -226,12 +227,28 @@ export default function GuaranteesSection() {
                   <p className="text-secondary mb-6">
                     Investissement unique pour votre présence en ligne
                   </p>
-                  <a
-                    href="/contact"
-                    className="block w-full px-5 py-3 text-center text-white bg-accent hover:bg-accent-bright transition-colors duration-300 rounded-lg shadow-md"
-                  >
-                    Obtenir un devis gratuit
-                  </a>
+                  <motion.div className="relative group">
+                    <motion.div
+                      className="absolute -inset-1 bg-gradient-to-r from-[#ec4899] via-[#8b5cf6] to-[#06b6d4] rounded-lg blur-sm opacity-70 group-hover:opacity-100 transition duration-300"
+                      animate={{
+                        opacity: [0.7, 0.9, 0.7],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }}
+                    ></motion.div>
+                    <motion.a
+                      href="/contact"
+                      className="relative block w-full px-5 py-3 text-center text-white font-bold bg-gradient-to-r from-[#ec4899]/80 via-[#8b5cf6]/80 to-[#06b6d4]/80 hover:from-[#ec4899] hover:via-[#8b5cf6] hover:to-[#06b6d4] transition-all duration-300 rounded-lg shadow-xl"
+                      whileHover={{ scale: 1.03, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Obtenir un devis gratuit
+                      <motion.span className="absolute -z-10 inset-0 rounded-lg bg-background/10 backdrop-blur-sm"></motion.span>
+                    </motion.a>
+                  </motion.div>
                 </div>
               </div>
             </div>

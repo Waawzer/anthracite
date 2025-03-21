@@ -166,10 +166,6 @@ export default function ContactForm() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-bold text-primary mb-6">
-        Envoyez-nous un message
-      </h2>
-
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
