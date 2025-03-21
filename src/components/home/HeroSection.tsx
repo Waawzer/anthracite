@@ -259,12 +259,13 @@ export default function HeroSection() {
               x: useTransform(springX, (v) => v * 5),
               y: useTransform(springY, (v) => v * 5),
               background:
-                "linear-gradient(to right, #9333ea, #4f46e5, #0ea5e9)",
+                "linear-gradient(to right, #a855f7, #6366f1, #38bdf8)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               textShadow:
-                "0 0 20px rgba(147, 51, 234, 0.1), 0 0 40px rgba(79, 70, 229, 0.05)",
+                "0 0 25px rgba(147, 51, 234, 0.3), 0 0 45px rgba(79, 70, 229, 0.2)",
+              filter: "brightness(1.2) contrast(1.1)",
             }}
           >
             Votre site web{" "}
@@ -272,9 +273,9 @@ export default function HeroSection() {
               className="relative inline-block"
               animate={{
                 textShadow: [
-                  "0 0 10px rgba(147, 51, 234, 0.3)",
-                  "0 0 20px rgba(147, 51, 234, 0.5)",
-                  "0 0 10px rgba(147, 51, 234, 0.3)",
+                  "0 0 15px rgba(147, 51, 234, 0.5)",
+                  "0 0 30px rgba(147, 51, 234, 0.8)",
+                  "0 0 15px rgba(147, 51, 234, 0.5)",
                 ],
               }}
               transition={{
@@ -284,19 +285,20 @@ export default function HeroSection() {
               }}
               whileHover={{
                 scale: 1.1,
-                filter: "brightness(1.3)",
-                textShadow: "0 0 20px rgba(147, 51, 234, 0.9)",
+                filter: "brightness(1.5)",
+                textShadow: "0 0 30px rgba(147, 51, 234, 0.9)",
               }}
             >
               <motion.span
                 className="relative z-10"
                 style={{
                   display: "inline-block",
-                  background: "linear-gradient(-45deg, #9333ea, #0ea5e9)",
+                  background: "linear-gradient(-45deg, #a855f7, #38bdf8)",
                   backgroundSize: "200% 200%",
                   backgroundClip: "text",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
+                  filter: "brightness(1.3) contrast(1.2)",
                 }}
                 animate={{
                   backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
