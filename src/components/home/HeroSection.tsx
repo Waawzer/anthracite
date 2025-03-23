@@ -98,7 +98,7 @@ export default function HeroSection() {
             block: 'start'
           });
         }, 10);
-      } catch (error) {
+      } catch (_) {
         console.log("Utilisation de l'animation de scroll personnalisée");
       }
       
