@@ -429,14 +429,20 @@ export default function ServicesSection() {
   return (
     <section
       id="services"
-      className="py-20 bg-background relative overflow-hidden bg-grid"
+      className="py-20 bg-background relative overflow-hidden"
     >
-      {/* Simplified background */}
-      <div className="absolute top-0 right-0 w-72 h-72 opacity-20">
+      {/* Simplified background with less opacity */}
+      <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
+      
+      {/* Semi-transparent overlay to improve text readability */}
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm pointer-events-none"></div>
+
+      {/* Accent glow elements with reduced opacity */}
+      <div className="absolute top-0 right-0 w-72 h-72 opacity-10">
         <div className="w-full h-full rounded-full bg-accent blur-3xl" />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-96 h-96 opacity-10">
+      <div className="absolute bottom-0 left-0 w-96 h-96 opacity-5">
         <div className="w-full h-full rounded-full bg-accent-secondary blur-3xl" />
       </div>
 
@@ -448,7 +454,7 @@ export default function ServicesSection() {
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
-          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12">
+          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12 bg-background/80 backdrop-blur-sm py-3 px-4 rounded-lg">
             Des solutions web modernes et sur mesure pour répondre à tous vos
             besoins digitaux. Découvrez nos services ci-dessous.
           </p>

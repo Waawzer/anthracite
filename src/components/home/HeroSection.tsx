@@ -53,39 +53,57 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  // Fonction de défilement fluide vers la section services
+  // Fonction de défilement fluide avec compatibilité cross-browser renforcée
   const handleDiscoverClick = () => {
-    // Trouver la section services
     const servicesSection = document.getElementById('services');
     
     if (servicesSection) {
-      // Désactiver temporairement le overflow pour éviter les problèmes pendant le scroll
-      document.body.style.overflowY = 'hidden';
+      // Position cible avec prise en compte du scroll actuel
+      const offsetTop = servicesSection.getBoundingClientRect().top + window.scrollY;
       
-      // Force un tick de rendu avant de déclencher le défilement
-      requestAnimationFrame(() => {
-        // Obtenir la position exacte
-        const offsetTop = servicesSection.getBoundingClientRect().top + window.pageYOffset;
+      // Approche multiple pour maximiser la compatibilité
+      
+      // 1. Animation avec requestAnimationFrame pour plus de fluidité
+      const duration = 1000; // ms
+      const startPosition = window.scrollY;
+      const distance = offsetTop - startPosition;
+      const startTime = performance.now();
+      
+      const animateScroll = (currentTime: number) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
         
-        // Utilisation de scrollIntoView avec smooth behavior pour une transition fluide
-        servicesSection.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
+        // Fonction easing pour un défilement naturel
+        const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        
+        window.scrollTo(0, startPosition + distance * easeInOutQuad(progress));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+      
+      // 2. Essayer également l'API native (en parallèle)
+      try {
+        // Approche moderne
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
         });
         
-        // Fallback avec window.scrollTo, appliqué avec un léger délai
+        // Approche scrollIntoView comme backup
         setTimeout(() => {
-          window.scrollTo({
-            top: offsetTop,
-            behavior: 'smooth'
+          servicesSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
           });
-          
-          // Réactiver le overflow après l'animation
-          setTimeout(() => {
-            document.body.style.overflowY = '';
-          }, 1000); // Délai correspondant à la durée approximative de l'animation
-        }, 50);
-      });
+        }, 10);
+      } catch (error) {
+        console.log("Utilisation de l'animation de scroll personnalisée");
+      }
+      
+      // Lancer notre animation personnalisée dans tous les cas comme garantie
+      requestAnimationFrame(animateScroll);
     }
   };
 

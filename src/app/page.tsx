@@ -20,14 +20,33 @@ export default function Home() {
     restDelta: 0.001,
   });
 
-  // Smooth scrolling implementation
+  // Fix pour le rendu iOS et compatibilité générale
   useEffect(() => {
+    // Fix pour problèmes de rendu sur iOS
+    document.documentElement.style.backgroundColor = "#f5f5f5";
+    
+    // Pour le mode sombre
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.style.backgroundColor = "#0a0a0a";
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.add("light");
+    }
+
+    // Force un re-paint pour iOS
+    const timeoutID = setTimeout(() => {
+      const body = document.body;
+      body.style.display = 'none';
+      void body.offsetHeight; // Force reflow
+      body.style.display = '';
+    }, 100);
+
     // Disable the effect if prefers-reduced-motion is enabled
     if (
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      return;
+      return () => clearTimeout(timeoutID);
     }
 
     // Enable smooth scrolling behavior
@@ -36,6 +55,7 @@ export default function Home() {
     // Clean up
     return () => {
       document.documentElement.style.scrollBehavior = "";
+      clearTimeout(timeoutID);
     };
   }, []);
 

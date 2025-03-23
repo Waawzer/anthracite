@@ -95,11 +95,17 @@ export default function GuaranteesSection() {
   return (
     <section
       id="garanties"
-      className="py-20 bg-background relative overflow-hidden bg-grid"
+      className="py-20 bg-background relative overflow-hidden"
     >
-      {/* Effets lumineux */}
-      <div className="absolute top-0 left-1/4 w-64 h-64 bg-purple-600 rounded-full opacity-10 blur-3xl pulsing"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full opacity-10 blur-3xl pulsing"></div>
+      {/* Grille de fond atténuée */}
+      <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none"></div>
+      
+      {/* Overlay semi-transparent pour améliorer la lisibilité */}
+      <div className="absolute inset-0 bg-background/85 backdrop-blur-sm pointer-events-none"></div>
+
+      {/* Effets lumineux avec opacité réduite */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-purple-600 rounded-full opacity-5 blur-3xl pulsing"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500 rounded-full opacity-5 blur-3xl pulsing"></div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
@@ -109,7 +115,7 @@ export default function GuaranteesSection() {
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
-          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16">
+          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16 bg-background/70 backdrop-blur-sm py-3 px-4 rounded-lg">
             Les récentes avancées en IA permettent de vous proposer un service
             de très haute qualité pour un prix abordable.
           </p>
@@ -137,7 +143,7 @@ export default function GuaranteesSection() {
           delay={0.8}
           className="max-w-3xl mx-auto mb-16"
         >
-          <div className="bg-card-bg p-8 rounded-xl border border-border text-center border-glow">
+          <div className="bg-card-bg p-8 rounded-xl border border-border text-center border-glow shadow-lg">
             <h3 className="text-2xl font-bold mb-4 gradient-accent">
               Notre Promesse
             </h3>
@@ -170,13 +176,13 @@ export default function GuaranteesSection() {
           </div>
         </RevealOnScroll>
 
-        {/* Nouvelle section Prix */}
+        {/* Nouvelle section Prix avec fond opaque */}
         <RevealOnScroll
           direction="up"
           delay={0.4}
           className="max-w-4xl mx-auto"
         >
-          <div className="bg-gradient-to-br from-accent/10 to-primary/5 p-10 rounded-2xl border border-accent/20 shadow-lg">
+          <div className="bg-card-bg border border-accent/20 p-10 rounded-2xl shadow-lg">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="lg:w-2/3">
                 <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500">
