@@ -53,13 +53,13 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  // Nouvelle approche avec scroll directement vers un élément plutôt que son ID
+  // Fonction de défilement fluide vers la section services
   const handleDiscoverClick = () => {
     // Trouver la section services
     const servicesSection = document.getElementById('services');
     
     if (servicesSection) {
-      // Désactiver temporairement les comportements qui pourraient interférer
+      // Désactiver temporairement le overflow pour éviter les problèmes pendant le scroll
       document.body.style.overflowY = 'hidden';
       
       // Force un tick de rendu avant de déclencher le défilement
@@ -67,21 +67,23 @@ export default function HeroSection() {
         // Obtenir la position exacte
         const offsetTop = servicesSection.getBoundingClientRect().top + window.pageYOffset;
         
-        // Technique 1: scrollIntoView
+        // Utilisation de scrollIntoView avec smooth behavior pour une transition fluide
         servicesSection.scrollIntoView({ 
           behavior: 'smooth',
           block: 'start'
         });
         
-        // Technique 2 (fallback): window.scrollTo, exécuté avec un léger délai pour ne pas interférer
+        // Fallback avec window.scrollTo, appliqué avec un léger délai
         setTimeout(() => {
           window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
           });
           
-          // Réactiver le défilement
-          document.body.style.overflowY = '';
+          // Réactiver le overflow après l'animation
+          setTimeout(() => {
+            document.body.style.overflowY = '';
+          }, 1000); // Délai correspondant à la durée approximative de l'animation
         }, 50);
       });
     }

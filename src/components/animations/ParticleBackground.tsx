@@ -38,10 +38,8 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
 
     // Couleurs vibrantes pour une meilleure visibilité
     const colors = [
-      "#8a2be2", // Violet intense
-      "#00FFFF", // Cyan vif
-      "rgba(0, 191, 255, 1)", // Cyan
-      "rgba(138, 43, 226, 1)", // Violet
+      "rgb(0, 125, 167)", // Cyan
+      "rgb(89, 0, 184)", // Violet
     ];
 
     // Types de formes
@@ -49,7 +47,7 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
 
     for (let i = 0; i < particleCount; i++) {
       // Taille importante pour une meilleure visibilité
-      const size = Math.random() * 25 + 25; // Particules entre 25 et 50px
+      const size = Math.random() * 25 + 50; // Particules entre 25 et 50px
       const shape = shapes[Math.floor(Math.random() * shapes.length)];
       
       // Centrer davantage les particules
@@ -219,7 +217,7 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
       className={containerRef ? "absolute inset-0 w-full h-full -z-10" : "fixed inset-0 w-full h-full -z-10"}
       style={{ 
         pointerEvents: "none",
-        filter: "contrast(1.7) brightness(1.5) blur(4px)" // Augmentation du contraste, luminosité et flou
+        filter: "contrast(1.9) brightness(1.9) blur(5px)" // Augmentation du contraste, luminosité et flou
       }}
     ></canvas>
   );
