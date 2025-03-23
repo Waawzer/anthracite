@@ -7,7 +7,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact | Anthracite Apps",
   description:
-    "Contactez notre équipe pour discuter de vos projets de développement web. Nous sommes à votre écoute pour répondre à vos besoins spécifiques.",
+    "Contactez-moi pour discuter de votre projet web. Je suis à votre écoute et prêt à répondre à vos besoins spécifiques.",
 };
 
 export default function ContactPage() {
@@ -28,9 +28,8 @@ export default function ContactPage() {
                   Parlons de votre projet
                 </h1>
                 <p className="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-                  Nous sommes impatients de transformer votre vision en réalité
-                  numérique. Contactez-nous pour débuter votre projet dès
-                  maintenant.
+                  J'ai hâte de transformer votre vision en réalité numérique. 
+                  Prenez contact pour que nous puissions discuter de votre projet ensemble.
                 </p>
               </div>
 
@@ -38,7 +37,7 @@ export default function ContactPage() {
                 <div className="lg:col-span-2 order-2 lg:order-1">
                   <div className="bg-card-bg p-8 rounded-2xl shadow-lg border border-accent/10 h-full backdrop-blur-sm">
                     <h2 className="text-2xl font-bold mb-6 gradient-accent">
-                      Nos coordonnées
+                      Mes coordonnées
                     </h2>
 
                     <div className="space-y-8">
@@ -97,7 +96,7 @@ export default function ContactPage() {
                           </h3>
                           <p className="text-secondary">
                             <a
-                              href="tel:+33123456789"
+                              href="tel:+33631156784"
                               className="hover:text-accent transition-colors"
                             >
                               +33 6 31 15 67 84
@@ -143,8 +142,7 @@ export default function ContactPage() {
                         À partir de 200€
                       </h3>
                       <p className="text-secondary mb-4">
-                        Améliorez votre présence en ligne avec une solution
-                        moderne et performante.
+                        Des solutions web modernes et sur mesure adaptées à votre budget
                       </p>
                       <div className="flex gap-2">
                         <div className="w-1/3 h-1 bg-accent/30 rounded-full"></div>
@@ -161,7 +159,7 @@ export default function ContactPage() {
                     <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
 
                     <h2 className="text-2xl font-bold mb-6 gradient-accent">
-                      Envoyez-nous un message
+                      Envoyez-moi un message
                     </h2>
                     <ContactForm />
                   </div>

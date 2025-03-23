@@ -71,7 +71,7 @@ export default function GuaranteesSection() {
       suffix: "%",
       title: "Satisfaction Client",
       description:
-        "Nos clients sont satisfaits de notre travail et recommandent nos services.",
+        "Mes clients sont satisfaits de mon travail et me recommandent à leur entourage.",
       delay: 0.2,
     },
     {
@@ -79,15 +79,15 @@ export default function GuaranteesSection() {
       suffix: "+",
       title: "Projets Réalisés",
       description:
-        "Plus d'une centaine de projets livrés avec succès pour des clients variés.",
+        "Plus d'une centaine de projets livrés avec succès pour des clients aux besoins variés.",
       delay: 0.4,
     },
     {
       end: 24,
       suffix: "/7",
-      title: "Support Technique",
+      title: "Disponibilité",
       description:
-        "Une équipe dédiée à votre service pour répondre à toutes vos questions.",
+        "Je reste accessible et réponds rapidement à vos questions, même en dehors des heures de bureau.",
       delay: 0.6,
     },
   ];
@@ -110,14 +110,13 @@ export default function GuaranteesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Nos Garanties
+            Mes Engagements
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16 bg-background/70 backdrop-blur-sm py-3 px-4 rounded-lg">
-            Les récentes avancées en IA permettent de vous proposer un service
-            de très haute qualité pour un prix abordable.
+            Avec une approche personnalisée et des outils modernes, je vous offre un service de qualité à un tarif accessible.
           </p>
         </RevealOnScroll>
 
@@ -145,19 +144,18 @@ export default function GuaranteesSection() {
         >
           <div className="bg-card-bg p-8 rounded-xl border border-border text-center border-glow shadow-lg">
             <h3 className="text-2xl font-bold mb-4 gradient-accent">
-              Notre Promesse
+              Une Promesse
             </h3>
             <p className="text-secondary mb-6">
-              Nous nous engageons à livrer des projets de haute qualité, dans
-              les délais et le budget convenus. Votre satisfaction est notre
-              priorité absolue et nous travaillons sans relâche pour dépasser
-              vos attentes.
+              Je m'engage à livrer votre projet dans les délais et le budget convenus. 
+              Votre satisfaction est une priorité, je resterai disponible après la 
+              livraison pour m'assurer que tout fonctionne parfaitement.
             </p>
             <a
               href="/contact"
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent hover:bg-accent-secondary transition-colors duration-300 shadow-lg hover:shadow-xl border-glow"
             >
-              Contactez-nous
+              Contactez-moi
               <svg
                 className="ml-2 -mr-1 w-5 h-5"
                 fill="none"
@@ -186,20 +184,19 @@ export default function GuaranteesSection() {
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="lg:w-2/3">
                 <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500">
-                  Le monde évolue, <br /> votre site doit évoluer aussi
+                  Le web évolue, le monde aussi<br /> votre site doit suivre
                 </h3>
                 <p className="text-secondary text-lg mb-6">
-                  Restez à la pointe de la technologie avec un site moderne,
-                  performant et adapté aux attentes actuelles de vos clients. Ne
-                  laissez pas votre présence en ligne devenir obsolète dans un
-                  monde digital en constante évolution.
+                  Ne laissez pas votre site web devenir obsolète. Un site moderne et performant 
+                  vous aide à vous démarquer et à attirer de nouveaux clients. Je vous accompagne 
+                  pour créer une présence en ligne qui vous ressemble vraiment.
                 </p>
                 <ul className="space-y-2 mb-8">
                   {[
-                    "Conception responsive adaptée à tous les appareils",
-                    "Performances optimisées pour un meilleur référencement",
-                    "Design moderne et expérience utilisateur intuitive",
-                    "Mises à jour régulières et maintenance incluse",
+                    "Design responsive parfaitement adapté à tous les écrans",
+                    "Optimisation des performances pour un meilleur référencement",
+                    "Expérience utilisateur intuitive qui convertit vos visiteurs",
+                    "Suivi et maintenance pour garder votre site à jour",
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start">
                       <svg
@@ -231,7 +228,7 @@ export default function GuaranteesSection() {
                     200€
                   </div>
                   <p className="text-secondary mb-6">
-                    Investissement unique pour votre présence en ligne
+                    Un investissement unique pour booster votre présence en ligne
                   </p>
                   <motion.div className="relative group">
                     <motion.div

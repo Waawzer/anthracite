@@ -208,7 +208,7 @@ function ServiceCard({
                   />
                 </svg>
               </motion.span>
-              Nos prestations incluent:
+              Mes prestations incluent:
             </h4>
             <ul className="space-y-4">
               {service.extendedDescription.map((item, idx) => (
@@ -332,14 +332,14 @@ export default function ServicesSection() {
       id: "site-vitrine",
       title: "Sites Vitrines",
       description:
-        "Des sites web élégants et performants qui présentent votre entreprise et ses valeurs. Avec une attention particulière à l'expérience utilisateur et au référencement.",
+        "Des sites web élégants qui reflètent votre identité et vos valeurs. Chaque projet est optimisé pour le référencement et l'expérience utilisateur.",
       extendedDescription: [
-        "Design personnalisé et responsive adapté à votre image de marque",
-        "Optimisation SEO pour un meilleur classement dans les moteurs de recherche",
-        "Intégration des médias sociaux et outils d'analyse de trafic",
-        "Formulaires de contact et maps interactives",
-        "Structure de navigation intuitive et expérience utilisateur optimisée",
-        "Maintenance et mises à jour régulières",
+        "Design sur mesure adapté à votre identité visuelle",
+        "Optimisation SEO pour être visible sur Google",
+        "Intégration avec vos réseaux sociaux et analytics",
+        "Formulaires de contact et cartes interactives",
+        "Navigation intuitive pensée pour vos visiteurs",
+        "Maintenance et mises à jour techniques",
       ],
       icon: (
         <svg
@@ -364,14 +364,14 @@ export default function ServicesSection() {
       id: "applications-web",
       title: "Applications Web",
       description:
-        "Des applications web sur mesure avec des interfaces utilisateur intuitives et des fonctionnalités avancées. Nous développons des solutions évolutives adaptées à vos besoins.",
+        "Développement d'applications web interactives et sur mesure qui répondent précisément à vos besoins. Mes solutions évoluent avec votre activité.",
       extendedDescription: [
-        "Développement full-stack avec les technologies les plus récentes",
-        "Interfaces utilisateur interactives et réactives",
-        "Gestion d'utilisateurs et authentification sécurisée",
+        "Développement avec les technologies les plus récentes",
+        "Interfaces utilisateur intuitives et réactives",
+        "Système d'authentification sécurisé",
         "Tableaux de bord et visualisations de données",
-        "API RESTful et intégrations avec services tiers",
-        "Architecture évolutive pour accompagner la croissance de votre activité",
+        "API et intégrations avec vos services existants",
+        "Architecture évolutive pour accompagner votre croissance",
       ],
       icon: (
         <svg
@@ -396,14 +396,14 @@ export default function ServicesSection() {
       id: "e-commerce",
       title: "E-commerce",
       description:
-        "Des boutiques en ligne performantes qui offrent une expérience d'achat fluide et sécurisée. Nos solutions e-commerce sont optimisées pour maximiser les conversions.",
+        "Réalisations de boutiques en ligne performantes offrant une expérience d'achat fluide et sécurisée, optimisées pour convertir vos visiteurs en clients.",
       extendedDescription: [
-        "Plateformes de vente en ligne personnalisées (Shopify, WooCommerce, solutions sur mesure)",
-        "Gestion de catalogue produits et stocks automatisée",
-        "Systèmes de paiement sécurisés et passerelles multiples",
-        "Optimisation du tunnel de conversion et du panier d'achat",
-        "Intégration avec les systèmes CRM et ERP existants",
-        "Fonctionnalités marketing: promotions, codes promo, ventes croisées",
+        "Solutions personnalisées (Shopify, WooCommerce ou sur mesure)",
+        "Gestion automatisée de votre catalogue et de vos stocks",
+        "Systèmes de paiement 100% sécurisés",
+        "Optimisation du parcours d'achat pour maximiser les conversions",
+        "Connexion avec vos outils CRM et ERP",
+        "Fonctionnalités marketing: réductions, codes promo, ventes croisées",
       ],
       icon: (
         <svg
@@ -449,14 +449,13 @@ export default function ServicesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Nos Services
+            Mes Services
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12 bg-background/80 backdrop-blur-sm py-3 px-4 rounded-lg">
-            Des solutions web modernes et sur mesure pour répondre à tous vos
-            besoins digitaux. Découvrez nos services ci-dessous.
+            Des solutions web sur mesure qui répondent parfaitement à vos besoins spécifiques. Découvrez ce que je peux faire pour vous.
           </p>
         </RevealOnScroll>
 

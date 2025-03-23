@@ -97,13 +97,13 @@ export default function ProjectsSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Nos Réalisations
+            Quelques Réalisations
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16">
-            Découvrez notre sélection de projets innovants et performants.
+            Découvrez une sélection de projets innovants et performants.
           </p>
         </RevealOnScroll>
 

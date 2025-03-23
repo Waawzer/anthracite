@@ -29,6 +29,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const validateEmail = (email: string) => {
     const re =
@@ -73,6 +74,11 @@ export default function ContactForm() {
         return newErrors;
       });
     }
+    
+    // Clear previous submit error if user modifies form after error
+    if (submitError) {
+      setSubmitError(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -83,26 +89,27 @@ export default function ContactForm() {
     }
 
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Simulate API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setSubmitted(true);
-      // In a real application, you would send the form data to your API here
-      // const response = await fetch('/api/contact', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formState),
-      // });
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formState),
+      });
 
-      // if (!response.ok) {
-      //   throw new Error('Failed to submit form');
-      // }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      // Handle error (show error message to user)
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Une erreur est survenue lors de l'envoi du message");
+      }
+
+      setSubmitted(true);
+    } catch (error: any) {
+      console.error("Erreur d'envoi:", error);
+      setSubmitError(error.message || "Une erreur est survenue. Veuillez réessayer ultérieurement.");
     } finally {
       setIsSubmitting(false);
     }
@@ -137,8 +144,7 @@ export default function ContactForm() {
           Message envoyé !
         </h3>
         <p className="text-secondary mb-6">
-          Merci de nous avoir contactés. Nous reviendrons vers vous dans les
-          plus brefs délais.
+          Merci de m'avoir contacté. Je vous répondrai personnellement dans les meilleurs délais.
         </p>
         <button
           onClick={() => {
@@ -166,6 +172,32 @@ export default function ContactForm() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      {submitError && (
+        <motion.div 
+          className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <p className="flex items-center">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            {submitError}
+          </p>
+        </motion.div>
+      )}
+      
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
@@ -254,90 +286,111 @@ export default function ContactForm() {
             >
               Sujet <span className="text-muted">(optionnel)</span>
             </label>
+            <select
+              id="subject"
+              name="subject"
+              value={formState.subject}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all"
+            >
+              <option value="">Sélectionnez un sujet</option>
+              <option value="Site vitrine">Site vitrine</option>
+              <option value="Application web">Application web</option>
+              <option value="E-commerce">Boutique en ligne</option>
+              <option value="Refonte de site">Refonte de site</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <div className="md:col-span-2">
+            <label
+              htmlFor="message"
+              className="block text-secondary text-sm font-medium mb-2"
+            >
+              Message <span className="text-accent">*</span>
+            </label>
             <motion.div
               whileFocus={{ scale: 1.01 }}
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
             >
-              <select
-                id="subject"
-                name="subject"
-                value={formState.subject}
+              <textarea
+                id="message"
+                name="message"
+                value={formState.message}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all"
-              >
-                <option value="">Sélectionnez un sujet</option>
-                <option value="Site Vitrine">Site Vitrine</option>
-                <option value="Application Web">Application Web</option>
-                <option value="E-commerce">E-commerce</option>
-                <option value="Autre">Autre</option>
-              </select>
+                rows={5}
+                className={`w-full px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all resize-none ${
+                  errors.message ? "border-red-500" : "border-border"
+                }`}
+                placeholder="Décrivez votre projet ou votre besoin..."
+              ></textarea>
             </motion.div>
+            {errors.message && (
+              <p className="mt-1 text-sm text-red-500">{errors.message}</p>
+            )}
           </div>
         </div>
 
-        <div className="mb-6">
-          <label
-            htmlFor="message"
-            className="block text-secondary text-sm font-medium mb-2"
+        <div className="flex justify-center">
+          <motion.button
+            type="submit"
+            disabled={isSubmitting}
+            className={`px-8 py-3 bg-accent hover:bg-accent-secondary text-white rounded-lg shadow-lg transition-all flex items-center space-x-2 ${
+              isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+            }`}
+            whileHover={{ scale: isSubmitting ? 1 : 1.03 }}
+            whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
           >
-            Message <span className="text-accent">*</span>
-          </label>
-          <motion.div
-            whileFocus={{ scale: 1.01 }}
-            transition={{ type: "spring", stiffness: 300, damping: 10 }}
-          >
-            <textarea
-              id="message"
-              name="message"
-              value={formState.message}
-              onChange={handleChange}
-              rows={5}
-              className={`w-full px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
-                errors.message ? "border-red-500" : "border-border"
-              }`}
-              placeholder="Décrivez votre projet ou vos besoins..."
-            ></textarea>
-          </motion.div>
-          {errors.message && (
-            <p className="mt-1 text-sm text-red-500">{errors.message}</p>
-          )}
-        </div>
-
-        <motion.button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full px-6 py-3 bg-accent hover:bg-accent-secondary text-white rounded-md transition-colors duration-300 relative overflow-hidden"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          {isSubmitting ? (
-            <span className="flex items-center justify-center">
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
+            {isSubmitting ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Envoi en cours...</span>
+              </>
+            ) : (
+              <>
+                <span>Envoyer le message</span>
+                <svg
+                  className="ml-2 -mr-1 w-5 h-5"
+                  fill="none"
                   stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Envoi en cours...
-            </span>
-          ) : (
-            "Envoyer le message"
-          )}
-        </motion.button>
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  ></path>
+                </svg>
+              </>
+            )}
+          </motion.button>
+        </div>
+        
+        <p className="text-center text-muted text-sm mt-6">
+          En soumettant ce formulaire, vous acceptez que je stocke et traite vos données 
+          pour pouvoir vous répondre.
+        </p>
       </form>
     </motion.div>
   );
