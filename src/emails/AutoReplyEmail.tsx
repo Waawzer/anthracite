@@ -31,7 +31,7 @@ export const AutoReplyEmail = ({
             Bonjour {name},
           </Heading>
           <Text style={paragraph}>
-            Merci d&apos;avoir pris contact avec moi concernant {subject.toLowerCase()}.
+            Merci d&apos;avoir pris contact avec moi concernant les {subject.toLowerCase()}.
           </Text>
           <Text style={paragraph}>
             J&apos;ai bien reçu votre message et je vous répondrai personnellement dans les plus brefs délais, 
@@ -51,11 +51,11 @@ export const AutoReplyEmail = ({
             Bien cordialement,
           </Text>
           <Text style={signature}>
-            Jason Cambert<br />
+            Antoine Foussier<br />
             Développeur Web<br />
             Anthracite Applications<br />
-            <Link href="https://anthracite-applications.com" style={link}>
-              anthracite-applications.com
+            <Link href="https://anthracite.app" style={link}>
+              anthracite.app
             </Link>
           </Text>
           <Hr style={hr} />

@@ -5,7 +5,7 @@ import AutoReplyEmail from "@/emails/AutoReplyEmail";
 
 // Initialiser Resend avec la clé API
 const resend = new Resend(process.env.RESEND_API_KEY);
-const contactEmail = process.env.CONTACT_EMAIL || "contact@anthracite-applications.com";
+const contactEmail = process.env.CONTACT_EMAIL || "contact@anthracite.app";
 
 // Interface pour les données du formulaire
 interface ContactFormData {
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const [notificationResponse, autoReplyResponse] = await Promise.all([
       // 1. Email de notification pour vous (le propriétaire du site)
       resend.emails.send({
-        from: `Contact Form <onboarding@resend.dev>`,
+        from: `Contact Form <contact@anthracite.app>`,
         to: contactEmail,
         subject: `Nouveau message de ${name}: ${subject || 'Demande de contact'}`,
         replyTo: email,
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
       // 2. Email de confirmation pour l'utilisateur
       resend.emails.send({
-        from: `Anthracite Applications <onboarding@resend.dev>`,
+        from: `Anthracite Applications <contact@anthracite.app>`,
         to: email,
         subject: `Votre message a bien été reçu - Anthracite Applications`,
         react: AutoReplyEmail({ 
