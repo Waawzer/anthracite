@@ -4,10 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   motion,
   useAnimationControls,
-  useMotionValue,
-  useTransform,
-  useSpring,
-  AnimatePresence,
 } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
 
@@ -29,74 +25,6 @@ interface ServiceData {
   shapes?: CardShape[]; // Add shapes to service data
 }
 
-// Component for rendering the geometric shapes at the bottom of each card
-function CardBottomShapes({
-  shapes,
-  isVisible,
-}: {
-  shapes?: CardShape[];
-  isVisible: boolean;
-}) {
-  if (!isVisible || !shapes || shapes.length === 0) return null;
-
-  // Only use the first shape to ensure uniqueness per card
-  const shape = shapes[0];
-
-  let shapeElement;
-
-  if (shape.type === "circle") {
-    shapeElement = (
-      <div
-        className="absolute rounded-full"
-        style={{
-          width: `${shape.size}px`,
-          height: `${shape.size}px`,
-          backgroundColor: shape.color,
-          left: `${shape.position}%`,
-          bottom: `28px`,
-          transform: "translateX(-50%)",
-        }}
-      />
-    );
-  } else if (shape.type === "square") {
-    shapeElement = (
-      <div
-        className="absolute"
-        style={{
-          width: `${shape.size}px`,
-          height: `${shape.size}px`,
-          backgroundColor: shape.color,
-          left: `${shape.position}%`,
-          bottom: `28px`,
-          transform: "translateX(-50%) rotate(45deg)",
-        }}
-      />
-    );
-  } else if (shape.type === "triangle") {
-    shapeElement = (
-      <div
-        className="absolute"
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: `${shape.size / 2}px solid transparent`,
-          borderRight: `${shape.size / 2}px solid transparent`,
-          borderBottom: `${shape.size}px solid ${shape.color}`,
-          left: `${shape.position}%`,
-          bottom: `28px`,
-          transform: "translateX(-50%)",
-        }}
-      />
-    );
-  }
-
-  return (
-    <div className="absolute bottom-0 left-0 w-full h-12 overflow-visible">
-      {shapeElement}
-    </div>
-  );
-}
-
 function ServiceCard({
   service,
   isExpanded,
@@ -109,7 +37,6 @@ function ServiceCard({
   // Références et états
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
-  const [isHovered, setIsHovered] = useState(false);
 
   // Animation pour l'expansion du contenu
   useEffect(() => {
@@ -117,13 +44,13 @@ function ServiceCard({
       controls.start({
         scale: 1.01,
         boxShadow: "0 12px 30px rgba(0, 0, 0, 0.15)",
-        transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
       });
     } else {
       controls.start({
         scale: 1,
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-        transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
       });
     }
   }, [isExpanded, controls]);
@@ -141,8 +68,6 @@ function ServiceCard({
         animate={controls}
         whileHover={{ scale: isExpanded ? 1.01 : 1.005 }}
         initial={{ scale: 1 }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
       >
         {/* Toggle button */}
         <motion.div
@@ -376,20 +301,6 @@ function ServiceCard({
 export default function ServicesSection() {
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  // Mouse position tracking for background effects
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX / window.innerWidth - 0.5,
-        y: e.clientY / window.innerHeight - 0.5,
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   // Toggle avec animation fluide
   const toggleServiceDetails = (serviceId: string) => {

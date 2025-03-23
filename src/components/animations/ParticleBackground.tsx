@@ -23,95 +23,77 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
   const particlesRef = useRef<Particle[]>([]);
   const animationFrameId = useRef<number | null>(null);
   const isActive = useRef(true);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  useEffect(() => {
+  // Initialize particles - moins nombreuses et concentrées au centre
+  const initParticles = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    
+    const particleCount = Math.min(
+      Math.floor((canvas.width * canvas.height) / 80000), // Divisé par 2
+      6 // Nombre maximum de particules
+    );
+    
+    particlesRef.current = [];
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    // Couleurs vibrantes pour une meilleure visibilité
+    const colors = [
+      "#8a2be2", // Violet intense
+      "#00FFFF", // Cyan vif
+      "rgba(0, 191, 255, 1)", // Cyan
+      "rgba(138, 43, 226, 1)", // Violet
+    ];
 
-    // Set canvas size based on container or window
-    const resizeCanvas = () => {
-      // If containerRef is provided, limit to that container's size
-      if (containerRef?.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setDimensions({ width: rect.width, height: rect.height });
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-        canvas.style.position = "absolute";
-        canvas.style.top = "0";
-        canvas.style.left = "0";
-      } else {
-        // Otherwise use the full window
-        const { innerWidth, innerHeight } = window;
-        setDimensions({ width: innerWidth, height: innerHeight });
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-      }
-      initParticles();
-    };
+    // Types de formes
+    const shapes: Array<'circle' | 'square' | 'triangle'> = ['circle', 'square', 'triangle'];
 
-    // Handle visibility change to pause animation when tab is not visible
-    const handleVisibilityChange = () => {
-      isActive.current = document.visibilityState === "visible";
+    for (let i = 0; i < particleCount; i++) {
+      // Taille importante pour une meilleure visibilité
+      const size = Math.random() * 25 + 25; // Particules entre 25 et 50px
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
       
-      if (isActive.current && !animationFrameId.current) {
-        animate();
-      }
-    };
-
-    // Initialize particles - encore moins nombreuses (moitié)
-    const initParticles = () => {
-      const particleCount = Math.min(
-        Math.floor((canvas.width * canvas.height) / 80000), // Divisé par 2 (40000 * 2)
-        6 // Divisé par 2 (30 / 2)
-      );
+      // Centrer davantage les particules
+      // Calculer les positions avec une concentration au centre (25%-75% de la zone)
+      const centerBiasX = canvas.width * 0.25 + (Math.random() * canvas.width * 0.5);
+      const centerBiasY = canvas.height * 0.25 + (Math.random() * canvas.height * 0.5);
       
-      particlesRef.current = [];
+      particlesRef.current.push({
+        x: centerBiasX,
+        y: centerBiasY,
+        size,
+        speedX: (Math.random() - 0.3) * 1.5, // Vitesse réduite
+        speedY: (Math.random() - 0.3) * 1.5, // Vitesse réduite
+        color: colors[Math.floor(Math.random() * colors.length)],
+        shape,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+      });
+    }
+  };
 
-      // Couleurs vibrantes pour une meilleure visibilité - sans jaune ni vert
-      const colors = [
-        "#8a2be2", // Violet intense
-        "#00FFFF", // Cyan vif
-        "rgba(0, 191, 255, 1)", // Cyan
-        "rgba(138, 43, 226, 1)", // Violet
-      ];
-
-      // Types de formes
-      const shapes: Array<'circle' | 'square' | 'triangle'> = ['circle', 'square', 'triangle'];
-
-      for (let i = 0; i < particleCount; i++) {
-        // Taille beaucoup plus importante pour une meilleure visibilité
-        const size = Math.random() * 25 + 25; // Particules entre 10 et 35px
-        const shape = shapes[Math.floor(Math.random() * shapes.length)];
-        
-        // Centrer davantage les particules
-        // Calculer les positions avec une concentration au centre (25%-75% de la zone)
-        const centerBiasX = canvas.width * 0.25 + (Math.random() * canvas.width * 0.5);
-        const centerBiasY = canvas.height * 0.25 + (Math.random() * canvas.height * 0.5);
-        
-        particlesRef.current.push({
-          x: centerBiasX,
-          y: centerBiasY,
-          size,
-          speedX: (Math.random() - 0.3) * 1.5, // Vitesse réduite
-          speedY: (Math.random() - 0.3) * 1.5, // Vitesse réduite
-          color: colors[Math.floor(Math.random() * colors.length)],
-          shape,
-          rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.01,
-        });
-      }
-    };
-
-    // Animation loop optimisée
+  const initAnimationFrame = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    
+    if (!canvas || !ctx) return;
+    
+    // Tracking
     let lastFrameTime = 0;
     const FRAME_RATE = 30; // Limite à 30 FPS pour de meilleures performances
     const FRAME_INTERVAL = 1000 / FRAME_RATE;
 
+    // Setup animation functions
+    const handleVisibilityChange = () => {
+      isActive.current = document.visibilityState === "visible";
+    };
+
+    // Animation loop
     const animate = (timestamp = 0) => {
+      if (!isActive.current) {
+        animationFrameId.current = requestAnimationFrame(animate);
+        return;
+      }
+
       // Limiter le framerate pour améliorer les performances
       if (timestamp - lastFrameTime < FRAME_INTERVAL) {
         animationFrameId.current = requestAnimationFrame(animate);
@@ -120,21 +102,17 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
       
       lastFrameTime = timestamp;
 
-      if (!isActive.current) {
-        animationFrameId.current = requestAnimationFrame(animate);
-        return;
-      }
-
+      // Effacer le canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Dessiner les particules
+      // Dessiner et mettre à jour chaque particule
       particlesRef.current.forEach((particle) => {
-        // Mise à jour de la position
+        // Mettre à jour la position
         particle.x += particle.speedX;
         particle.y += particle.speedY;
         particle.rotation += particle.rotationSpeed;
 
-        // Rebondissement aux bords de l'écran
+        // Faire rebondir sur les bords
         if (particle.x < 0 || particle.x > canvas.width) {
           particle.speedX *= -1;
         }
@@ -142,76 +120,92 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
           particle.speedY *= -1;
         }
 
-        // Dessiner les particules avec un effet de lueur (glow)
+        // Dessiner la particule
         ctx.save();
-        ctx.beginPath();
+        ctx.translate(particle.x, particle.y);
+        ctx.rotate(particle.rotation);
         
-        // Appliquer une légère luminosité et saturation
-        ctx.filter = 'brightness(1.2) saturate(1.5)';
+        ctx.fillStyle = particle.color;
         
-        // Définir la couleur avec une opacité de 0.9
-        const color = particle.color.replace(')', ', 0.9)').replace('rgb', 'rgba');
-        
-        // Effet de lueur pour chaque particule
-        ctx.shadowColor = particle.color;
-        ctx.shadowBlur = 25; // Augmenté pour plus de visibilité
-        
-        // Dessiner selon la forme
         if (particle.shape === 'circle') {
-          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2);
           ctx.fill();
         } else if (particle.shape === 'square') {
-          ctx.translate(particle.x, particle.y);
-          ctx.rotate(particle.rotation);
-          ctx.rect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
-          ctx.fillStyle = color;
-          ctx.fill();
+          ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
         } else if (particle.shape === 'triangle') {
-          ctx.translate(particle.x, particle.y);
-          ctx.rotate(particle.rotation);
           ctx.beginPath();
           ctx.moveTo(0, -particle.size / 2);
           ctx.lineTo(particle.size / 2, particle.size / 2);
           ctx.lineTo(-particle.size / 2, particle.size / 2);
           ctx.closePath();
-          ctx.fillStyle = color;
           ctx.fill();
         }
         
         ctx.restore();
       });
 
+      // Continuer l'animation
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
-    // Set up event listeners
-    window.addEventListener("resize", resizeCanvas);
+    // Start animation
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    
+    animationFrameId.current = requestAnimationFrame(animate);
+
+    // Return cleanup function
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  };
+
+  useEffect(() => {
+    // Ajuster la taille du canvas pour qu'il couvre tout l'écran ou le conteneur
+    const updateCanvasSize = () => {
+      if (!canvasRef.current) return;
+
+      if (containerRef && containerRef.current) {
+        // Si un conteneur est fourni, ajuster à la taille du conteneur
+        const container = containerRef.current;
+        canvasRef.current.width = container.clientWidth;
+        canvasRef.current.height = container.clientHeight;
+      } else {
+        // Sinon, couvrir tout l'écran
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = window.innerHeight;
+      }
+
+      // Recalculer le nombre de particules basé sur la nouvelle taille
+      initParticles();
+    };
+
+    // Mettre à jour la taille du canvas lors du montage et redimensionnement
+    updateCanvasSize();
+    window.addEventListener('resize', updateCanvasSize);
+
     // Observer container resize if applicable
     let resizeObserver: ResizeObserver | null = null;
     if (containerRef?.current) {
-      resizeObserver = new ResizeObserver(resizeCanvas);
+      resizeObserver = new ResizeObserver(updateCanvasSize);
       resizeObserver.observe(containerRef.current);
     }
 
-    // Initialize
-    resizeCanvas();
-    animate();
+    // Animation des particules
+    const cleanupAnimation = initAnimationFrame();
 
-    // Cleanup
+    // Nettoyer quand le composant est démonté
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      
-      if (resizeObserver && containerRef?.current) {
+      window.removeEventListener('resize', updateCanvasSize);
+      if (resizeObserver) {
+        if (containerRef?.current) {
+          resizeObserver.unobserve(containerRef.current);
+        }
         resizeObserver.disconnect();
       }
-      
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      if (cleanupAnimation) cleanupAnimation();
     };
   }, [containerRef]);
 
