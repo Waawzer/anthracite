@@ -147,9 +147,9 @@ export default function GuaranteesSection() {
               Une Promesse
             </h3>
             <p className="text-secondary mb-6">
-              Je m'engage à livrer votre projet dans les délais et le budget convenus. 
+              Je m&apos;engage à livrer votre projet dans les délais et le budget convenus. 
               Votre satisfaction est une priorité, je resterai disponible après la 
-              livraison pour m'assurer que tout fonctionne parfaitement.
+              livraison pour m&apos;assurer que tout fonctionne parfaitement.
             </p>
             <a
               href="/contact"
@@ -184,7 +184,7 @@ export default function GuaranteesSection() {
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="lg:w-2/3">
                 <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500">
-                  Le web évolue, le monde aussi<br /> votre site doit suivre
+                  Le web évolue, <br /> votre site doit suivre
                 </h3>
                 <p className="text-secondary text-lg mb-6">
                   Ne laissez pas votre site web devenir obsolète. Un site moderne et performant 

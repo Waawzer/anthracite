@@ -16,6 +16,11 @@ interface ContactFormData {
   message: string;
 }
 
+// Interface pour les erreurs
+interface ApiError extends Error {
+  message: string;
+}
+
 // Fonction pour valider l'email
 const validateEmail = (email: string): boolean => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -83,12 +88,13 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Erreur d'envoi d'email:", error);
+    const apiError = error as ApiError;
     return NextResponse.json(
       { 
         error: "Une erreur est survenue lors de l'envoi du message", 
-        details: error.message 
+        details: apiError.message 
       },
       { status: 500 }
     );

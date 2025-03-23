@@ -31,16 +31,16 @@ export const AutoReplyEmail = ({
             Bonjour {name},
           </Heading>
           <Text style={paragraph}>
-            Merci d'avoir pris contact avec moi concernant {subject.toLowerCase()}.
+            Merci d&apos;avoir pris contact avec moi concernant {subject.toLowerCase()}.
           </Text>
           <Text style={paragraph}>
-            J'ai bien reçu votre message et je vous répondrai personnellement dans les plus brefs délais, 
+            J&apos;ai bien reçu votre message et je vous répondrai personnellement dans les plus brefs délais, 
             généralement sous 24h ouvrées.
           </Text>
           <Hr style={hr} />
           <Section>
             <Text style={paragraph}>
-              En attendant, n'hésitez pas à consulter mon portfolio de projets sur le site.
+              En attendant, n&apos;hésitez pas à consulter mon portfolio de projets sur le site.
             </Text>
             <Text style={paragraph}>
               Si votre demande est urgente, vous pouvez me joindre directement par téléphone au +33 6 31 15 67 84.

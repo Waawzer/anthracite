@@ -28,7 +28,7 @@ export default function ContactPage() {
                   Parlons de votre projet
                 </h1>
                 <p className="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-                  J'ai hâte de transformer votre vision en réalité numérique. 
+                  J&apos;ai hâte de transformer votre vision en réalité numérique. 
                   Prenez contact pour que nous puissions discuter de votre projet ensemble.
                 </p>
               </div>

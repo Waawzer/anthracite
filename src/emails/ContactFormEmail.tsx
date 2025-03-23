@@ -29,7 +29,7 @@ export const ContactFormEmail = ({
   return (
     <Html>
       <Head />
-      <Preview>Nouveau message via le formulaire de contact d'Anthracite Applications</Preview>
+      <Preview>Nouveau message via le formulaire de contact d&apos;Anthracite Applications</Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={heading}>

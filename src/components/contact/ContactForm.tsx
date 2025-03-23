@@ -17,6 +17,10 @@ interface FormErrors {
   message?: string;
 }
 
+interface ApiError extends Error {
+  message: string;
+}
+
 export default function ContactForm() {
   const [formState, setFormState] = useState<FormState>({
     name: "",
@@ -107,9 +111,10 @@ export default function ContactForm() {
       }
 
       setSubmitted(true);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erreur d'envoi:", error);
-      setSubmitError(error.message || "Une erreur est survenue. Veuillez réessayer ultérieurement.");
+      const apiError = error as ApiError;
+      setSubmitError(apiError.message || "Une erreur est survenue. Veuillez réessayer ultérieurement.");
     } finally {
       setIsSubmitting(false);
     }
@@ -144,7 +149,7 @@ export default function ContactForm() {
           Message envoyé !
         </h3>
         <p className="text-secondary mb-6">
-          Merci de m'avoir contacté. Je vous répondrai personnellement dans les meilleurs délais.
+          Merci de m&apos;avoir contacté. Je vous répondrai personnellement dans les meilleurs délais.
         </p>
         <button
           onClick={() => {
