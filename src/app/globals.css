@@ -15,27 +15,27 @@
   --accent-cyan: #00bfff;
   --accent-violet: #8a2be2;
 
-  /* Default light mode */
-  --background: var(--white);
-  --foreground: var(--anthracite-900);
-  --primary: var(--anthracite-900);
-  --secondary: var(--anthracite-700);
+  /* Toujours utiliser le mode sombre */
+  --background: var(--black);
+  --foreground: var(--anthracite-100);
+  --primary: var(--white);
+  --secondary: var(--anthracite-300);
   --muted: var(--anthracite-400);
   --accent: var(--accent-cyan);
   --accent-secondary: var(--accent-violet);
-  --border: var(--anthracite-200);
-  --card-bg: var(--white);
-  --card-border: var(--anthracite-200);
+  --border: var(--anthracite-700);
+  --card-bg: var(--anthracite-800);
+  --card-border: var(--anthracite-700);
 
-  --foreground-rgb: 26, 26, 26;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 245, 245, 245;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 12, 12, 17;
+  --background-end-rgb: 17, 17, 24;
   --accent-color: 138, 43, 226; /* violet */
   --accent-secondary-color: 0, 191, 255; /* cyan */
-  --primary-color: 26, 26, 26;
-  --secondary-color: 51, 51, 51;
-  --border-color: 212, 212, 212;
-  --muted-color: 115, 115, 115;
+  --primary-color: 240, 240, 255;
+  --secondary-color: 190, 190, 210;
+  --border-color: 45, 45, 60;
+  --muted-color: 140, 140, 160;
 }
 
 @theme inline {
@@ -45,29 +45,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--black);
-    --foreground: var(--anthracite-100);
-    --primary: var(--white);
-    --secondary: var(--anthracite-300);
-    --muted: var(--anthracite-400);
-    --accent: var(--accent-cyan);
-    --accent-secondary: var(--accent-violet);
-    --border: var(--anthracite-700);
-    --card-bg: var(--anthracite-800);
-    --card-border: var(--anthracite-700);
-
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 12, 12, 17;
-    --background-end-rgb: 17, 17, 24;
-  }
-}
+/* Suppression de la règle pour prefers-color-scheme: dark car nous forçons maintenant le mode sombre */
 
 body {
   /* Fallback basic background to ensure something always shows */
-  background-color: #f5f5f5;
-  color: #1a1a1a;
+  background-color: #0a0a0a;
+  color: #e5e5e5;
 
   /* Then apply the gradients */
   background-image: linear-gradient(
@@ -83,23 +66,22 @@ body {
   width: 100%;
 }
 
-/* Dark mode explicit override */
-@media (prefers-color-scheme: dark) {
+/* Specific fixes for iOS */
+@supports (-webkit-touch-callout: none) {
   body {
-    background-color: #0a0a0a;
-    color: #e5e5e5;
+    background-color: #0a0a0a !important;
+    color: #e5e5e5 !important;
+  }
+  
+  html {
+    background-color: #0a0a0a !important;
   }
 }
 
-/* Ensure content is visible on iOS */
-.dark body {
+/* Assurons-nous que le mode sombre est toujours appliqué */
+html.dark {
   background-color: #0a0a0a;
   color: #e5e5e5;
-}
-
-.light body {
-  background-color: #f5f5f5;
-  color: #1a1a1a;
 }
 
 /* Custom cursor styles */
