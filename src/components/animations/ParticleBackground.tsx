@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 interface Particle {
   x: number;
@@ -188,9 +188,13 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
 
     // Observer container resize if applicable
     let resizeObserver: ResizeObserver | null = null;
-    if (containerRef?.current) {
+    
+    // Capture la référence actuelle du conteneur pour l'utiliser dans le nettoyage
+    const currentContainerRef = containerRef?.current;
+    
+    if (currentContainerRef) {
       resizeObserver = new ResizeObserver(updateCanvasSize);
-      resizeObserver.observe(containerRef.current);
+      resizeObserver.observe(currentContainerRef);
     }
 
     // Animation des particules
@@ -200,8 +204,8 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
       if (resizeObserver) {
-        if (containerRef?.current) {
-          resizeObserver.unobserve(containerRef.current);
+        if (currentContainerRef) {
+          resizeObserver.unobserve(currentContainerRef);
         }
         resizeObserver.disconnect();
       }
