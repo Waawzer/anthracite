@@ -10,14 +10,19 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  // Create smooth springs for cursor follow
-  const springConfig = { damping: 25, stiffness: 300 };
+  // Create smoother springs for cursor follow with increased damping
+  const springConfig = { damping: 35, stiffness: 250 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   // Track cursor visibility (hide when inactive or leaves window)
   const [isVisible, setIsVisible] = useState(false);
   const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Track the last update time to throttle element checks
+  const lastUpdateTime = useRef(0);
+  // Store the interval ID for cleanup
+  const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -41,8 +46,13 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    // Detect elements and update cursor variant
+    // Throttled function to update cursor variant
     const updateCursorVariant = () => {
+      const now = Date.now();
+      // Limit checks to once every 150ms for performance
+      if (now - lastUpdateTime.current < 150) return;
+      lastUpdateTime.current = now;
+      
       const hoveredElement = document.elementFromPoint(
         cursorX.get() + 16,
         cursorY.get() + 16
@@ -50,7 +60,19 @@ export default function CustomCursor() {
 
       if (!hoveredElement) return;
 
-      // Check for button or link elements
+      // Use dataset attributes for more efficient detection when possible
+      const elementRole = hoveredElement.getAttribute('data-cursor-role');
+      if (elementRole) {
+        if (elementRole === 'button' || elementRole === 'link') {
+          setVariant('button');
+          return;
+        } else if (elementRole === 'text') {
+          setVariant('text');
+          return;
+        }
+      }
+
+      // Fallback to traditional tag checking with cached selectors
       if (
         hoveredElement.tagName === "BUTTON" ||
         hoveredElement.tagName === "A" ||
@@ -59,7 +81,6 @@ export default function CustomCursor() {
       ) {
         setVariant("button");
       } else if (
-        // Check for text elements
         hoveredElement.tagName === "P" ||
         hoveredElement.tagName === "H1" ||
         hoveredElement.tagName === "H2" ||
@@ -73,17 +94,23 @@ export default function CustomCursor() {
       }
     };
 
-    const interval = setInterval(updateCursorVariant, 100);
+    // Use a less frequent interval for element checking
+    checkIntervalRef.current = setInterval(updateCursorVariant, 150);
 
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("mouseenter", handleMouseEnter);
+    // Use passive event listeners for better performance
+    window.addEventListener("mousemove", moveCursor, { passive: true });
+    window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+    window.addEventListener("mouseenter", handleMouseEnter, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("mouseenter", handleMouseEnter);
-      clearInterval(interval);
+      
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+      }
+      
       if (inactivityTimerRef.current) {
         clearTimeout(inactivityTimerRef.current);
       }
@@ -101,16 +128,16 @@ export default function CustomCursor() {
       mixBlendMode: "difference" as const,
     },
     text: {
-      width: 80,
-      height: 80,
+      width: 64, // Reduced from 80px
+      height: 64, // Reduced from 80px
       borderRadius: "50%",
       backgroundColor: "var(--accent)",
       opacity: 0.1,
       mixBlendMode: "difference" as const,
     },
     button: {
-      width: 64,
-      height: 64,
+      width: 48, // Reduced from 64px
+      height: 48, // Reduced from 64px
       borderRadius: "50%",
       backgroundColor: "var(--accent)",
       opacity: 0.4,
@@ -135,8 +162,9 @@ export default function CustomCursor() {
       variants={cursorVariants}
       transition={{
         type: "spring",
-        damping: 30,
-        stiffness: 200,
+        damping: 40, // Increased damping
+        stiffness: 150, // Decreased stiffness for smoother motion
+        mass: 0.8, // Added mass for momentum
       }}
     />
   );

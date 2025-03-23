@@ -10,7 +10,6 @@ import GuaranteesSection from "@/components/home/GuaranteesSection";
 import CustomCursor from "@/components/animations/CustomCursor";
 import SectionTransition from "@/components/animations/SectionTransition";
 import ParallaxEffect from "@/components/animations/ParallaxEffect";
-import AnimatedBackground from "@/components/animations/AnimatedBackground";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 export default function Home() {
@@ -43,7 +42,6 @@ export default function Home() {
   return (
     <>
       <CustomCursor />
-      <AnimatedBackground />
       <Header />
 
       {/* Progress bar */}

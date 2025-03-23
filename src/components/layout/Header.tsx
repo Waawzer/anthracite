@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   motion,
@@ -23,21 +23,31 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState("/");
   const { scrollY } = useScroll();
 
-  // Animation values based on scroll
+  // Animation values based on scroll - simplified ranges
   const headerOpacity = useTransform(scrollY, [0, 50], [0.95, 1]);
   const headerBlur = useTransform(scrollY, [0, 100], [0, 8]);
   const headerBorderOpacity = useTransform(scrollY, [0, 100], [0, 0.2]);
   const logoScale = useTransform(scrollY, [0, 100], [1, 0.95]);
 
+  // Last scroll check timestamp for throttling
+  const lastScrollCheckRef = useRef(0);
+
   useEffect(() => {
     const handleScroll = () => {
+      // Throttle scroll events to once every 100ms
+      const now = Date.now();
+      if (now - lastScrollCheckRef.current < 100) return;
+      lastScrollCheckRef.current = now;
+
       const isScrolled = window.scrollY > 10;
       if (isScrolled !== scrolled) {
         setScrolled(isScrolled);
       }
 
-      // Detect active section
+      // Detect active section with reduced checks
       const sections = ["/", "services", "realisations", "garanties"];
+      let newActiveSection = activeSection;
+
       for (const section of sections) {
         const element = document.getElementById(
           section === "/" ? "hero" : section
@@ -45,18 +55,23 @@ export default function Header() {
         if (element) {
           const rect = element.getBoundingClientRect();
           if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section === "/" ? "/" : `/#${section}`);
+            newActiveSection = section === "/" ? "/" : `/#${section}`;
             break;
           }
         }
       }
+
+      if (newActiveSection !== activeSection) {
+        setActiveSection(newActiveSection);
+      }
     };
 
+    // Use passive event listener for better performance
     document.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, [scrolled]);
+  }, [scrolled, activeSection]);
 
   // Prevent body scrolling when menu is open
   useEffect(() => {
@@ -137,27 +152,26 @@ export default function Header() {
                 <motion.span
                   className="text-2xl md:text-3xl bg-clip-text text-transparent"
                   initial={{ x: 0 }}
-                  whileHover={{ scale: 1.08, x: 5 }}
+                  whileHover={{ scale: 1.05, x: 3 }}
                   animate={{
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                     textShadow: [
                       "0 0 15px rgba(6, 182, 212, 0.3)",
-                      "0 0 25px rgba(59, 130, 246, 0.5)",
-                      "0 0 20px rgba(236, 72, 153, 0.4)",
+                      "0 0 25px rgba(59, 130, 246, 0.4)",
                       "0 0 15px rgba(6, 182, 212, 0.3)",
                     ],
                   }}
                   transition={{
                     type: "spring",
-                    stiffness: 400,
-                    damping: 15,
+                    stiffness: 300,
+                    damping: 25,
                     backgroundPosition: {
                       duration: 8,
                       repeat: Infinity,
                       ease: "easeInOut",
                     },
                     textShadow: {
-                      duration: 5,
+                      duration: 6,
                       repeat: Infinity,
                       ease: "easeInOut",
                     },
@@ -169,8 +183,8 @@ export default function Header() {
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    textShadow: "0 0 25px rgba(6, 182, 212, 0.5)",
-                    filter: "brightness(1.3) contrast(1.2)",
+                    textShadow: "0 0 20px rgba(6, 182, 212, 0.4)",
+                    filter: "brightness(1.2) contrast(1.1)",
                   }}
                 >
                   Anthracite
@@ -179,26 +193,20 @@ export default function Header() {
                   className="text-sm md:text-lg ml-auto -mt-1"
                   initial={{ opacity: 0.7, rotateZ: 0 }}
                   whileHover={{
-                    scale: 1.2,
+                    scale: 1.1,
                     opacity: 1,
-                    rotateZ: [0, -3, 3, 0],
+                    rotateZ: 0,
                   }}
                   animate={{
-                    y: [0, -3, 0],
-                    rotateZ: [0, -2, 2, 0],
+                    y: [0, -2, 0],
                   }}
                   transition={{
                     scale: {
                       type: "spring",
-                      stiffness: 500,
-                      damping: 15,
+                      stiffness: 400,
+                      damping: 20,
                     },
                     y: {
-                      duration: 2.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                    rotateZ: {
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
@@ -210,8 +218,8 @@ export default function Header() {
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    textShadow: "0 0 15px rgba(236, 72, 153, 0.6)",
-                    filter: "brightness(1.4) contrast(1.3)",
+                    textShadow: "0 0 15px rgba(236, 72, 153, 0.5)",
+                    filter: "brightness(1.2) contrast(1.2)",
                     fontWeight: "800",
                     letterSpacing: "0.05em",
                   }}

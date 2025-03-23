@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 interface Particle {
   x: number;
@@ -9,16 +9,22 @@ interface Particle {
   speedX: number;
   speedY: number;
   color: string;
-  alpha: number;
+  shape: 'circle' | 'square' | 'triangle';
+  rotation: number;
+  rotationSpeed: number;
 }
 
-export default function ParticleBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particles = useRef<Particle[]>([]);
-  const mousePosition = useRef({ x: 0, y: 0 });
-  const isActive = useRef(true);
+interface ParticleBackgroundProps {
+  containerRef?: React.RefObject<HTMLDivElement | HTMLElement | null>;
+}
 
-  // Initialize particles on component mount
+export default function ParticleBackground({ containerRef }: ParticleBackgroundProps = {}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const animationFrameId = useRef<number | null>(null);
+  const isActive = useRef(true);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -26,148 +32,197 @@ export default function ParticleBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas size
+    // Set canvas size based on container or window
     const resizeCanvas = () => {
-      const { innerWidth, innerHeight } = window;
-      canvas.width = innerWidth;
-      canvas.height = innerHeight;
+      // If containerRef is provided, limit to that container's size
+      if (containerRef?.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setDimensions({ width: rect.width, height: rect.height });
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        canvas.style.position = "absolute";
+        canvas.style.top = "0";
+        canvas.style.left = "0";
+      } else {
+        // Otherwise use the full window
+        const { innerWidth, innerHeight } = window;
+        setDimensions({ width: innerWidth, height: innerHeight });
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+      }
       initParticles();
-    };
-
-    // Handle mouse movement to influence particles
-    const handleMouseMove = (e: MouseEvent) => {
-      mousePosition.current = {
-        x: e.clientX,
-        y: e.clientY,
-      };
     };
 
     // Handle visibility change to pause animation when tab is not visible
     const handleVisibilityChange = () => {
       isActive.current = document.visibilityState === "visible";
+      
+      if (isActive.current && !animationFrameId.current) {
+        animate();
+      }
     };
 
-    // Initialize particles
+    // Initialize particles - encore moins nombreuses (moitié)
     const initParticles = () => {
       const particleCount = Math.min(
-        Math.floor((canvas.width * canvas.height) / 12000),
-        100
+        Math.floor((canvas.width * canvas.height) / 80000), // Divisé par 2 (40000 * 2)
+        6 // Divisé par 2 (30 / 2)
       );
-      particles.current = [];
+      
+      particlesRef.current = [];
+
+      // Couleurs vibrantes pour une meilleure visibilité - sans jaune ni vert
+      const colors = [
+        "#8a2be2", // Violet intense
+        "#00FFFF", // Cyan vif
+        "rgba(0, 191, 255, 1)", // Cyan
+        "rgba(138, 43, 226, 1)", // Violet
+      ];
+
+      // Types de formes
+      const shapes: Array<'circle' | 'square' | 'triangle'> = ['circle', 'square', 'triangle'];
 
       for (let i = 0; i < particleCount; i++) {
-        const size = Math.random() * 3 + 1;
-        particles.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+        // Taille beaucoup plus importante pour une meilleure visibilité
+        const size = Math.random() * 25 + 25; // Particules entre 10 et 35px
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        
+        // Centrer davantage les particules
+        // Calculer les positions avec une concentration au centre (25%-75% de la zone)
+        const centerBiasX = canvas.width * 0.25 + (Math.random() * canvas.width * 0.5);
+        const centerBiasY = canvas.height * 0.25 + (Math.random() * canvas.height * 0.5);
+        
+        particlesRef.current.push({
+          x: centerBiasX,
+          y: centerBiasY,
           size,
-          speedX: Math.random() * 0.2 - 0.1,
-          speedY: Math.random() * 0.2 - 0.1,
-          color: getParticleColor(),
-          alpha: Math.random() * 0.5 + 0.1,
+          speedX: (Math.random() - 0.3) * 1.5, // Vitesse réduite
+          speedY: (Math.random() - 0.3) * 1.5, // Vitesse réduite
+          color: colors[Math.floor(Math.random() * colors.length)],
+          shape,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.01,
         });
       }
     };
 
-    const getParticleColor = () => {
-      const colors = [
-        "rgba(0, 191, 255, 1)", // Cyan
-        "rgba(138, 43, 226, 1)", // Violet
-      ];
-      return colors[Math.floor(Math.random() * colors.length)];
-    };
+    // Animation loop optimisée
+    let lastFrameTime = 0;
+    const FRAME_RATE = 30; // Limite à 30 FPS pour de meilleures performances
+    const FRAME_INTERVAL = 1000 / FRAME_RATE;
 
-    // Animation loop
-    const animate = () => {
+    const animate = (timestamp = 0) => {
+      // Limiter le framerate pour améliorer les performances
+      if (timestamp - lastFrameTime < FRAME_INTERVAL) {
+        animationFrameId.current = requestAnimationFrame(animate);
+        return;
+      }
+      
+      lastFrameTime = timestamp;
+
       if (!isActive.current) {
-        requestAnimationFrame(animate);
+        animationFrameId.current = requestAnimationFrame(animate);
         return;
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particles.current.forEach((particle) => {
-        // Update particle position
+      // Dessiner les particules
+      particlesRef.current.forEach((particle) => {
+        // Mise à jour de la position
         particle.x += particle.speedX;
         particle.y += particle.speedY;
+        particle.rotation += particle.rotationSpeed;
 
-        // Boundary check with wrap around
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.y > canvas.height) particle.y = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-
-        // Mouse interaction - particles move away from cursor
-        const dx = particle.x - mousePosition.current.x;
-        const dy = particle.y - mousePosition.current.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDistance = 100;
-
-        if (distance < maxDistance) {
-          const force = (1 - distance / maxDistance) * 0.2;
-          particle.speedX += (dx * force) / distance;
-          particle.speedY += (dy * force) / distance;
+        // Rebondissement aux bords de l'écran
+        if (particle.x < 0 || particle.x > canvas.width) {
+          particle.speedX *= -1;
+        }
+        if (particle.y < 0 || particle.y > canvas.height) {
+          particle.speedY *= -1;
         }
 
-        // Speed damping
-        particle.speedX *= 0.99;
-        particle.speedY *= 0.99;
-
-        // Draw particle
-        ctx.globalAlpha = particle.alpha;
-        ctx.fillStyle = particle.color;
+        // Dessiner les particules avec un effet de lueur (glow)
+        ctx.save();
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
+        
+        // Appliquer une légère luminosité et saturation
+        ctx.filter = 'brightness(1.2) saturate(1.5)';
+        
+        // Définir la couleur avec une opacité de 0.9
+        const color = particle.color.replace(')', ', 0.9)').replace('rgb', 'rgba');
+        
+        // Effet de lueur pour chaque particule
+        ctx.shadowColor = particle.color;
+        ctx.shadowBlur = 25; // Augmenté pour plus de visibilité
+        
+        // Dessiner selon la forme
+        if (particle.shape === 'circle') {
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+        } else if (particle.shape === 'square') {
+          ctx.translate(particle.x, particle.y);
+          ctx.rotate(particle.rotation);
+          ctx.rect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+          ctx.fillStyle = color;
+          ctx.fill();
+        } else if (particle.shape === 'triangle') {
+          ctx.translate(particle.x, particle.y);
+          ctx.rotate(particle.rotation);
+          ctx.beginPath();
+          ctx.moveTo(0, -particle.size / 2);
+          ctx.lineTo(particle.size / 2, particle.size / 2);
+          ctx.lineTo(-particle.size / 2, particle.size / 2);
+          ctx.closePath();
+          ctx.fillStyle = color;
+          ctx.fill();
+        }
+        
+        ctx.restore();
       });
 
-      // Draw connections between close particles
-      ctx.globalAlpha = 0.1;
-      ctx.strokeStyle = "#8a2be2";
-      ctx.lineWidth = 0.3;
-
-      for (let i = 0; i < particles.current.length; i++) {
-        for (let j = i + 1; j < particles.current.length; j++) {
-          const dx = particles.current[i].x - particles.current[j].x;
-          const dy = particles.current[i].y - particles.current[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 150) {
-            ctx.globalAlpha = 0.1 * (1 - distance / 150);
-            ctx.beginPath();
-            ctx.moveTo(particles.current[i].x, particles.current[i].y);
-            ctx.lineTo(particles.current[j].x, particles.current[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(animate);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
 
     // Set up event listeners
     window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    // Observer container resize if applicable
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef?.current) {
+      resizeObserver = new ResizeObserver(resizeCanvas);
+      resizeObserver.observe(containerRef.current);
+    }
 
     // Initialize
     resizeCanvas();
     animate();
 
-    // Cleanup event listeners
+    // Cleanup
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      isActive.current = false;
+      
+      if (resizeObserver && containerRef?.current) {
+        resizeObserver.disconnect();
+      }
+      
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
     };
-  }, []);
+  }, [containerRef]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full -z-20 bg-transparent"
-      style={{ pointerEvents: "none" }}
+      className={containerRef ? "absolute inset-0 w-full h-full -z-10" : "fixed inset-0 w-full h-full -z-10"}
+      style={{ 
+        pointerEvents: "none",
+        filter: "contrast(1.7) brightness(1.5) blur(4px)" // Augmentation du contraste, luminosité et flou
+      }}
     ></canvas>
   );
 }

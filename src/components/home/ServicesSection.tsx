@@ -7,6 +7,7 @@ import {
   useMotionValue,
   useTransform,
   useSpring,
+  AnimatePresence,
 } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
 
@@ -99,127 +100,33 @@ function CardBottomShapes({
 function ServiceCard({
   service,
   isExpanded,
-  mouseX,
-  mouseY,
   onToggle,
 }: {
   service: ServiceData;
   isExpanded: boolean;
-  mouseX: React.MutableRefObject<number>;
-  mouseY: React.MutableRefObject<number>;
   onToggle: (serviceId: string) => void;
 }) {
+  // Références et états
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
+  const [isHovered, setIsHovered] = useState(false);
 
-  const [relativeX, setRelativeX] = useState(0);
-  const [relativeY, setRelativeY] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
-
-  // Create motion values that persist across renders
-  const xMotionValue = useMotionValue(relativeX);
-  const yMotionValue = useMotionValue(relativeY);
-
-  // Update motion values when relative positions change
-  useEffect(() => {
-    xMotionValue.set(relativeX);
-    yMotionValue.set(relativeY);
-  }, [relativeX, relativeY, xMotionValue, yMotionValue]);
-
-  // Subtle rotation effect with reduced intensity
-  const rotateX = useTransform(yMotionValue, [-0.5, 0.5], [0.8, -0.8]);
-  const rotateY = useTransform(xMotionValue, [-0.5, 0.5], [-0.8, 0.8]);
-
-  // Smooth motion with increased damping for stability
-  const springRotateX = useSpring(rotateX, { stiffness: 70, damping: 50 });
-  const springRotateY = useSpring(rotateY, { stiffness: 70, damping: 50 });
-
-  // Subtle shadow movement with reduced intensity
-  const shadowX = useTransform(xMotionValue, [-0.5, 0.5], ["-4px", "4px"]);
-  const shadowY = useTransform(yMotionValue, [-0.5, 0.5], ["-4px", "4px"]);
-  const shadowBlur = useTransform(
-    useMotionValue(Math.sqrt(relativeX * relativeX + relativeY * relativeY)),
-    [0, 0.7],
-    ["10px", "15px"]
-  );
-
-  useEffect(() => {
-    if (!isHovering) {
-      // Smoothly reset position when not hovering
-      const resetInterval = setInterval(() => {
-        setRelativeX((prev) => prev * 0.9);
-        setRelativeY((prev) => prev * 0.9);
-
-        // Stop the interval when we're close enough to zero
-        if (Math.abs(relativeX) < 0.01 && Math.abs(relativeY) < 0.01) {
-          setRelativeX(0);
-          setRelativeY(0);
-          clearInterval(resetInterval);
-        }
-      }, 20);
-
-      return () => clearInterval(resetInterval);
-    }
-
-    const updatePosition = () => {
-      if (!cardRef.current) return;
-
-      const rect = cardRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      // Calculate mouse position relative to card center with reduced intensity
-      const newRelativeX = ((mouseX.current - centerX) / rect.width) * 0.5;
-      const newRelativeY = ((mouseY.current - centerY) / rect.height) * 0.5;
-
-      // Apply smoothing by taking small steps toward the target position
-      setRelativeX((prev) => prev + (newRelativeX - prev) * 0.08);
-      setRelativeY((prev) => prev + (newRelativeY - prev) * 0.08);
-    };
-
-    // Use RAF for smoother animation with throttling
-    let lastUpdateTime = 0;
-    let rafId: number;
-
-    const updateFrame = (timestamp: number) => {
-      // Throttle updates to every ~16ms (60fps)
-      if (timestamp - lastUpdateTime > 16) {
-        updatePosition();
-        lastUpdateTime = timestamp;
-      }
-      rafId = requestAnimationFrame(updateFrame);
-    };
-
-    rafId = requestAnimationFrame(updateFrame);
-    return () => cancelAnimationFrame(rafId);
-  }, [mouseX, mouseY, isHovering, relativeX, relativeY]);
-
-  // Handle hover and expanded effects with smoother transitions
+  // Animation pour l'expansion du contenu
   useEffect(() => {
     if (isExpanded) {
       controls.start({
         scale: 1.01,
         boxShadow: "0 12px 30px rgba(0, 0, 0, 0.15)",
-        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
       });
     } else {
       controls.start({
         scale: 1,
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-        transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
       });
     }
   }, [isExpanded, controls]);
-
-  // Optimized glow effect based on mouse position
-  const glowOpacity = useTransform(
-    useMotionValue(Math.sqrt(relativeX * relativeX + relativeY * relativeY)),
-    [0, 0.4],
-    [0.12, 0]
-  );
-
-  const glowX = useTransform(xMotionValue, [-0.5, 0.5], ["30%", "70%"]);
-  const glowY = useTransform(yMotionValue, [-0.5, 0.5], ["30%", "70%"]);
 
   return (
     <RevealOnScroll delay={service.delay} className="group relative">
@@ -227,43 +134,31 @@ function ServiceCard({
         ref={cardRef}
         className={`flex flex-col rounded-xl overflow-hidden bg-card-bg border ${
           isExpanded ? "border-accent/40" : "border-card-border"
-        } shadow-lg transition-all duration-500 relative p-8`}
+        } shadow-lg relative p-8`}
         style={{
-          rotateX: springRotateX,
-          rotateY: springRotateY,
-          transformStyle: "preserve-3d",
-          transform: "perspective(1200px)",
-          boxShadow: `${shadowX.get()} ${shadowY.get()} ${shadowBlur.get()} rgba(0, 0, 0, 0.1)`,
           minHeight: isExpanded ? "none" : "320px",
         }}
         animate={controls}
         whileHover={{ scale: isExpanded ? 1.01 : 1.005 }}
         initial={{ scale: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 30,
-          mass: 0.8,
-        }}
-        layout="position"
-        onHoverStart={() => setIsHovering(true)}
-        onHoverEnd={() => setIsHovering(false)}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
       >
         {/* Toggle button */}
         <motion.div
-          className="absolute top-4 right-4 z-20 w-6 h-6 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 text-accent cursor-pointer"
+          className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 text-accent cursor-pointer"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.2 }}
           onClick={(e) => {
-            e.stopPropagation(); // Prevent event from bubbling to parent
+            e.stopPropagation();
             onToggle(service.id);
           }}
         >
           {isExpanded ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -278,7 +173,7 @@ function ServiceCard({
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -293,21 +188,8 @@ function ServiceCard({
           )}
         </motion.div>
 
-        {/* Enhanced glow effect */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none"
-          style={{
-            opacity: glowOpacity,
-            background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(147, 51, 234, 0.2), transparent 70%)`,
-          }}
-          animate={{
-            opacity: isExpanded ? 0.15 : glowOpacity.get(),
-          }}
-          transition={{ duration: 0.6 }}
-        />
-
-        {/* Background accent for expanded state with smoother transition */}
-        <motion.div
+        {/* Background accent for expanded state */}
+        <motion.div 
           className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{
@@ -463,38 +345,75 @@ function ServiceCard({
           </motion.div>
         </motion.div>
 
-        {/* Geometric shapes at bottom of card - only visible when not expanded */}
-        <CardBottomShapes shapes={service.shapes} isVisible={!isExpanded} />
+        {/* Simple shape indicator for non-expanded cards */}
+        {!isExpanded && service.shapes && service.shapes[0] && (
+          <div className="absolute bottom-0 left-0 w-full h-12 overflow-visible">
+            <div
+              className={`absolute ${
+                service.shapes[0].type === 'circle' ? 'rounded-full' : 
+                service.shapes[0].type === 'square' ? '' : ''
+              }`}
+              style={{
+                width: `${service.shapes[0].size}px`,
+                height: `${service.shapes[0].size}px`,
+                backgroundColor: service.shapes[0].color,
+                left: `${service.shapes[0].position}%`,
+                bottom: `28px`,
+                transform: service.shapes[0].type === 'square' 
+                  ? 'translateX(-50%) rotate(45deg)' 
+                  : service.shapes[0].type === 'triangle'
+                  ? 'translateX(-50%)'
+                  : 'translateX(-50%)',
+              }}
+            />
+          </div>
+        )}
       </motion.div>
     </RevealOnScroll>
   );
 }
 
 export default function ServicesSection() {
-  const [expandedServiceId, setExpandedServiceId] = useState<string | null>(
-    null
-  );
+  const [expandedServiceId, setExpandedServiceId] = useState<string | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Mouse tracking
-  const mouseX = useRef(0);
-  const mouseY = useRef(0);
-
+  // Mouse position tracking for background effects
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX.current = e.clientX;
-      mouseY.current = e.clientY;
+      setMousePosition({
+        x: e.clientX / window.innerWidth - 0.5,
+        y: e.clientY / window.innerHeight - 0.5,
+      });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  // Toggle avec animation fluide
   const toggleServiceDetails = (serviceId: string) => {
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
     setExpandedServiceId((prev) => (prev === serviceId ? null : serviceId));
+    
+    // Délai basé sur la durée de l'animation
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 550);
   };
 
   const toggleAllServices = () => {
-    setExpandedServiceId((prev) => (prev ? null : "all"));
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setExpandedServiceId((prev) => (prev === "all" ? null : "all"));
+    
+    // Délai basé sur la durée de l'animation
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 550);
   };
 
   const services: ServiceData[] = [
@@ -596,90 +515,32 @@ export default function ServicesSection() {
     },
   ];
 
-  // Parallax effect for background orbs
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX / window.innerWidth - 0.5,
-        y: e.clientY / window.innerHeight - 0.5,
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const handleOpenService = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      const { serviceId } = customEvent.detail;
-      setExpandedServiceId(serviceId);
-    };
-
-    const handleCloseService = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      const { serviceId } = customEvent.detail;
-      setExpandedServiceId((prev) => (prev === serviceId ? null : prev));
-    };
-
-    window.addEventListener("openService", handleOpenService);
-    window.addEventListener("closeService", handleCloseService);
-
-    return () => {
-      window.removeEventListener("openService", handleOpenService);
-      window.removeEventListener("closeService", handleCloseService);
-    };
-  }, []);
-
   return (
     <section
       id="services"
       className="py-20 bg-background relative overflow-hidden bg-grid"
     >
-      {/* Background effects that follow mouse subtly */}
-      <motion.div
-        className="absolute top-0 right-0 w-72 h-72 opacity-20"
-        style={{
-          x: mousePosition.x * -20,
-          y: mousePosition.y * -20,
-        }}
-      >
-        <div className="w-full h-full rounded-full bg-accent blur-3xl pulsing" />
-      </motion.div>
+      {/* Simplified background */}
+      <div className="absolute top-0 right-0 w-72 h-72 opacity-20">
+        <div className="w-full h-full rounded-full bg-accent blur-3xl" />
+      </div>
 
-      <motion.div
-        className="absolute bottom-0 left-0 w-96 h-96 opacity-10"
-        style={{
-          x: mousePosition.x * 20,
-          y: mousePosition.y * 20,
-        }}
-      >
-        <div className="w-full h-full rounded-full bg-accent-secondary blur-3xl pulsing" />
-      </motion.div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 opacity-10">
+        <div className="w-full h-full rounded-full bg-accent-secondary blur-3xl" />
+      </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
+          <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
             Nos Services
-          </motion.h2>
+          </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
-          <motion.p
-            className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
+          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12">
             Des solutions web modernes et sur mesure pour répondre à tous vos
             besoins digitaux. Découvrez nos services ci-dessous.
-          </motion.p>
+          </p>
         </RevealOnScroll>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 items-start auto-rows-auto">
@@ -696,54 +557,46 @@ export default function ServicesSection() {
                   expandedServiceId === service.id ||
                   expandedServiceId === "all"
                 }
-                mouseX={mouseX}
-                mouseY={mouseY}
                 onToggle={toggleServiceDetails}
               />
             </div>
           ))}
         </div>
 
-        {/* Centralized toggle button for all services */}
+        {/* Simplified toggle button */}
         <div className="flex justify-center mt-12">
-          <motion.button
+          <button
             onClick={toggleAllServices}
             className={`flex items-center justify-center gap-2 px-8 py-3 rounded-full text-base font-medium transition-all duration-300 ${
               expandedServiceId === "all"
                 ? "bg-accent/20 text-white hover:bg-accent/30"
                 : "bg-card-bg text-accent hover:bg-accent/5"
             } border border-accent/20 shadow-lg`}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
           >
             <span>
               {expandedServiceId === "all"
                 ? "Masquer les détails"
                 : "Afficher tous les détails"}
             </span>
-            <motion.div
-              animate={{ rotate: expandedServiceId === "all" ? 180 : 0 }}
-              transition={{ duration: 0.5 }}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              style={{ 
+                transform: expandedServiceId === "all" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.5s"
+              }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </motion.div>
-          </motion.button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </section>
