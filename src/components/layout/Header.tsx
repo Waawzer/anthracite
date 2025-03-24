@@ -25,8 +25,6 @@ export default function Header() {
 
   // Animation values based on scroll - simplified ranges
   const headerOpacity = useTransform(scrollY, [0, 50], [0.95, 1]);
-  const headerBlur = useTransform(scrollY, [0, 100], [0, 8]);
-  const headerBorderOpacity = useTransform(scrollY, [0, 100], [0, 0.2]);
   const logoScale = useTransform(scrollY, [0, 100], [1, 0.95]);
 
   // Last scroll check timestamp for throttling
