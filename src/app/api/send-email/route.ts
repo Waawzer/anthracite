@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const [notificationResponse, autoReplyResponse] = await Promise.all([
       // 1. Email de notification pour vous (le propriétaire du site)
       resend.emails.send({
-        from: `Contact Form <contact@anthracite.app>`,
+        from: `Contact Form <onboarding@resend.dev>`,
         to: contactEmail,
         subject: `Nouveau message de ${name}: ${subject || 'Demande de contact'}`,
         replyTo: email,
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
       // 2. Email de confirmation pour l'utilisateur
       resend.emails.send({
-        from: `Anthracite Applications <contact@anthracite.app>`,
+        from: `Anthracite Applications <onboarding@resend.dev>`,
         to: email,
         subject: `Votre message a bien été reçu - Anthracite Applications`,
         react: AutoReplyEmail({ 
