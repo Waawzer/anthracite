@@ -1,15 +1,21 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import ParticleBackground from "../animations/ParticleBackground";
 
 const rotatingWords = [
   "aux tendances actuelles",
-  "remis au goût du jour",
-  "moderne et attrayant",
-  "rapide et performant",
-  "accessible et responsive",
+  "aux animations fluides",
+  "modernisé et attrayant",
+  "pour une expérience utilisateur",
+  "et revisité pour le référencement",
 ];
 
 export default function HeroSection() {
@@ -55,53 +61,55 @@ export default function HeroSection() {
 
   // Fonction de défilement fluide avec compatibilité cross-browser renforcée
   const handleDiscoverClick = () => {
-    const servicesSection = document.getElementById('services');
-    
+    const servicesSection = document.getElementById("services");
+
     if (servicesSection) {
       // Position cible avec prise en compte du scroll actuel
-      const offsetTop = servicesSection.getBoundingClientRect().top + window.scrollY;
-      
+      const offsetTop =
+        servicesSection.getBoundingClientRect().top + window.scrollY;
+
       // Approche multiple pour maximiser la compatibilité
-      
+
       // 1. Animation avec requestAnimationFrame pour plus de fluidité
       const duration = 1000; // ms
       const startPosition = window.scrollY;
       const distance = offsetTop - startPosition;
       const startTime = performance.now();
-      
+
       const animateScroll = (currentTime: number) => {
         const elapsedTime = currentTime - startTime;
         const progress = Math.min(elapsedTime / duration, 1);
-        
+
         // Fonction easing pour un défilement naturel
-        const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-        
+        const easeInOutQuad = (t: number) =>
+          t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
         window.scrollTo(0, startPosition + distance * easeInOutQuad(progress));
-        
+
         if (progress < 1) {
           requestAnimationFrame(animateScroll);
         }
       };
-      
+
       // 2. Essayer également l'API native (en parallèle)
       try {
         // Approche moderne
         window.scrollTo({
           top: offsetTop,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
-        
+
         // Approche scrollIntoView comme backup
         setTimeout(() => {
           servicesSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+            behavior: "smooth",
+            block: "start",
           });
         }, 10);
       } catch {
         console.log("Utilisation de l'animation de scroll personnalisée");
       }
-      
+
       // Lancer notre animation personnalisée dans tous les cas comme garantie
       requestAnimationFrame(animateScroll);
     }
@@ -192,7 +200,9 @@ export default function HeroSection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              <span className="text-white font-semibold text-sm">Découvrir</span>
+              <span className="text-white font-semibold text-sm">
+                Découvrir
+              </span>
               <svg
                 className="ml-2.5 w-4.5 h-4.5"
                 fill="none"

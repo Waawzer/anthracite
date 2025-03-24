@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import {
-  motion,
-  useAnimationControls,
-} from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
 
 // Define the shape types for the card bottom shapes
@@ -114,7 +111,7 @@ function ServiceCard({
         </motion.div>
 
         {/* Background accent for expanded state */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{
@@ -275,8 +272,11 @@ function ServiceCard({
           <div className="absolute bottom-0 left-0 w-full h-12 overflow-visible">
             <div
               className={`absolute ${
-                service.shapes[0].type === 'circle' ? 'rounded-full' : 
-                service.shapes[0].type === 'square' ? '' : ''
+                service.shapes[0].type === "circle"
+                  ? "rounded-full"
+                  : service.shapes[0].type === "square"
+                    ? ""
+                    : ""
               }`}
               style={{
                 width: `${service.shapes[0].size}px`,
@@ -284,11 +284,12 @@ function ServiceCard({
                 backgroundColor: service.shapes[0].color,
                 left: `${service.shapes[0].position}%`,
                 bottom: `28px`,
-                transform: service.shapes[0].type === 'square' 
-                  ? 'translateX(-50%) rotate(45deg)' 
-                  : service.shapes[0].type === 'triangle'
-                  ? 'translateX(-50%)'
-                  : 'translateX(-50%)',
+                transform:
+                  service.shapes[0].type === "square"
+                    ? "translateX(-50%) rotate(45deg)"
+                    : service.shapes[0].type === "triangle"
+                      ? "translateX(-50%)"
+                      : "translateX(-50%)",
               }}
             />
           </div>
@@ -299,16 +300,18 @@ function ServiceCard({
 }
 
 export default function ServicesSection() {
-  const [expandedServiceId, setExpandedServiceId] = useState<string | null>(null);
+  const [expandedServiceId, setExpandedServiceId] = useState<string | null>(
+    null
+  );
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Toggle avec animation fluide
   const toggleServiceDetails = (serviceId: string) => {
     if (isAnimating) return;
-    
+
     setIsAnimating(true);
     setExpandedServiceId((prev) => (prev === serviceId ? null : serviceId));
-    
+
     // Délai basé sur la durée de l'animation
     setTimeout(() => {
       setIsAnimating(false);
@@ -317,10 +320,10 @@ export default function ServicesSection() {
 
   const toggleAllServices = () => {
     if (isAnimating) return;
-    
+
     setIsAnimating(true);
     setExpandedServiceId((prev) => (prev === "all" ? null : "all"));
-    
+
     // Délai basé sur la durée de l'animation
     setTimeout(() => {
       setIsAnimating(false);
@@ -433,7 +436,7 @@ export default function ServicesSection() {
     >
       {/* Simplified background with less opacity */}
       <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
-      
+
       {/* Semi-transparent overlay to improve text readability */}
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm pointer-events-none"></div>
 
@@ -449,13 +452,14 @@ export default function ServicesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Mes Services
+            Les Services
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12 bg-background/80 backdrop-blur-sm py-3 px-4 rounded-lg">
-            Des solutions web sur mesure qui répondent parfaitement à vos besoins spécifiques. Découvrez ce que je peux faire pour vous.
+            Des solutions web sur mesure qui répondent parfaitement à vos
+            besoins spécifiques.
           </p>
         </RevealOnScroll>
 
@@ -500,9 +504,12 @@ export default function ServicesSection() {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              style={{ 
-                transform: expandedServiceId === "all" ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform 0.5s"
+              style={{
+                transform:
+                  expandedServiceId === "all"
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)",
+                transition: "transform 0.5s",
               }}
             >
               <path
