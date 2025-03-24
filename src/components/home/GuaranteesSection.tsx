@@ -99,7 +99,7 @@ export default function GuaranteesSection() {
     >
       {/* Grille de fond atténuée */}
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none"></div>
-      
+
       {/* Overlay semi-transparent pour améliorer la lisibilité */}
       <div className="absolute inset-0 bg-background/85 backdrop-blur-sm pointer-events-none"></div>
 
@@ -110,13 +110,14 @@ export default function GuaranteesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Mes Engagements
+            Un vrai engagement
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16 py-3 px-4 rounded-lg">
-            Avec une approche personnalisée et des outils modernes, je vous offre un service de qualité à un tarif accessible.
+            Avec une approche personnalisée et des outils modernes, votre
+            free-lance vous offrera un service de qualité à un tarif accessible.
           </p>
         </RevealOnScroll>
 
@@ -147,9 +148,10 @@ export default function GuaranteesSection() {
               Une Promesse
             </h3>
             <p className="text-secondary mb-6">
-              Je m&apos;engage à livrer votre projet dans les délais et le budget convenus. 
-              Votre satisfaction est une priorité, je resterai disponible après la 
-              livraison pour m&apos;assurer que tout fonctionne parfaitement.
+              Un free-lance qui s&apos;engage vous engage à livrer votre projet
+              dans les délais et le budget convenus. Votre satisfaction est une
+              priorité, je resterai disponible après la livraison pour
+              m&apos;assurer que tout fonctionne parfaitement.
             </p>
             <a
               href="/contact"
@@ -183,13 +185,14 @@ export default function GuaranteesSection() {
           <div className="bg-card-bg border border-accent/20 p-10 rounded-2xl shadow-lg">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="lg:w-2/3">
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500">
+                <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-200 to-blue-500">
                   Le web évolue, <br /> votre site doit suivre
                 </h3>
                 <p className="text-secondary text-lg mb-6">
-                  Ne laissez pas votre site web devenir obsolète. Un site moderne et performant 
-                  vous aide à vous démarquer et à attirer de nouveaux clients. Je vous accompagne 
-                  pour créer une présence en ligne qui vous ressemble vraiment.
+                  Ne laissez pas votre site web devenir obsolète. Un site
+                  moderne et performant vous aide à vous démarquer et à attirer
+                  de nouveaux clients. Je vous accompagne pour créer une
+                  présence en ligne qui vous ressemble vraiment.
                 </p>
                 <ul className="space-y-2 mb-8">
                   {[
@@ -228,7 +231,8 @@ export default function GuaranteesSection() {
                     200€
                   </div>
                   <p className="text-secondary mb-6">
-                    Un investissement unique pour booster votre présence en ligne
+                    Un investissement unique pour booster votre présence en
+                    ligne
                   </p>
                   <motion.div className="relative group">
                     <motion.div

@@ -78,7 +78,7 @@ export default function ContactForm() {
         return newErrors;
       });
     }
-    
+
     // Clear previous submit error if user modifies form after error
     if (submitError) {
       setSubmitError(null);
@@ -96,10 +96,10 @@ export default function ContactForm() {
     setSubmitError(null);
 
     try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
+      const response = await fetch("/api/send-email", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formState),
       });
@@ -107,14 +107,19 @@ export default function ContactForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Une erreur est survenue lors de l'envoi du message");
+        throw new Error(
+          data.error || "Une erreur est survenue lors de l'envoi du message"
+        );
       }
 
       setSubmitted(true);
     } catch (error: unknown) {
       console.error("Erreur d'envoi:", error);
       const apiError = error as ApiError;
-      setSubmitError(apiError.message || "Une erreur est survenue. Veuillez réessayer ultérieurement.");
+      setSubmitError(
+        apiError.message ||
+          "Une erreur est survenue. Veuillez réessayer ultérieurement."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -149,7 +154,8 @@ export default function ContactForm() {
           Message envoyé !
         </h3>
         <p className="text-secondary mb-6">
-          Merci de m&apos;avoir contacté. Je vous répondrai personnellement dans les meilleurs délais.
+          Merci de m&apos;avoir contacté. Je vous répondrai personnellement dans
+          les meilleurs délais.
         </p>
         <button
           onClick={() => {
@@ -178,7 +184,7 @@ export default function ContactForm() {
       transition={{ duration: 0.5 }}
     >
       {submitError && (
-        <motion.div 
+        <motion.div
           className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,7 +208,7 @@ export default function ContactForm() {
           </p>
         </motion.div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
@@ -391,11 +397,6 @@ export default function ContactForm() {
             )}
           </motion.button>
         </div>
-        
-        <p className="text-center text-muted text-sm mt-6">
-          En soumettant ce formulaire, vous acceptez que je stocke et traite vos données 
-          pour pouvoir vous répondre.
-        </p>
       </form>
     </motion.div>
   );
