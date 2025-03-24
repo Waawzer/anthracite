@@ -115,7 +115,7 @@ export default function GuaranteesSection() {
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
-          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16 bg-background/70 backdrop-blur-sm py-3 px-4 rounded-lg">
+          <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16 py-3 px-4 rounded-lg">
             Avec une approche personnalisée et des outils modernes, je vous offre un service de qualité à un tarif accessible.
           </p>
         </RevealOnScroll>
@@ -153,7 +153,7 @@ export default function GuaranteesSection() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent hover:bg-accent-secondary transition-colors duration-300 shadow-lg hover:shadow-xl border-glow"
+              className="inline-flex items-center justify-center px-7 py-4 border border-accent text-lg font-bold rounded-md text-white bg-gradient-to-r from-accent via-purple-500 to-blue-500 hover:from-accent/90 hover:via-purple-500/90 hover:to-blue-500/90 transition-all duration-300 shadow-lg hover:shadow-accent/20 hover:shadow-xl hover:scale-105 transform hover:-translate-y-1"
             >
               Contactez-moi
               <svg

@@ -123,14 +123,10 @@ export default function Header() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={
           {
-            backgroundColor: scrolled
-              ? "rgba(28, 30, 35, var(--opacity))"
-              : "transparent",
-            backdropFilter: scrolled ? `blur(${headerBlur.get()}px)` : "none",
-            borderBottom: scrolled
-              ? `1px solid rgba(75, 85, 99, ${headerBorderOpacity.get()})`
-              : "none",
-            boxShadow: scrolled ? `0 4px 20px rgba(0, 0, 0, 0.1)` : "none",
+            backgroundColor: "transparent",
+            backdropFilter: "none",
+            borderBottom: "none",
+            boxShadow: "none",
             "--opacity": headerOpacity,
           } as React.CSSProperties
         }
