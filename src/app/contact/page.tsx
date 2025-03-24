@@ -64,10 +64,10 @@ export default function ContactPage() {
                           </h3>
                           <p className="text-secondary">
                             <a
-                              href="mailto:contact@anthracite-applications.com"
+                              href="mailto:contact@anthracite.app"
                               className="hover:text-accent transition-colors"
                             >
-                              contact@anthracite-applications.com
+                              contact@anthracite.app
                             </a>
                           </p>
                         </div>
