@@ -131,7 +131,7 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center">
         <div className="max-w-3xl mx-auto">
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 group"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -143,33 +143,105 @@ export default function HeroSection() {
               x: useTransform(springX, (v) => v * 5),
               y: useTransform(springY, (v) => v * 5),
               background:
-                "linear-gradient(to right, #a855f7, #6366f1, #38bdf8)",
+                "linear-gradient(to right, #f0abfc, #818cf8, #7dd3fc)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               textShadow:
-                "0 0 25px rgba(147, 51, 234, 0.3), 0 0 45px rgba(79, 70, 229, 0.2)",
+                "0 0 40px rgba(147, 51, 234, 0.4), 0 0 50px rgba(79, 70, 229, 0.3)",
             }}
           >
             Votre site web{" "}
-            <span
+            <motion.span
               className="relative inline-block"
+              whileHover={{
+                scale: 1.1,
+                transition: { duration: 0.3 },
+              }}
               style={{
-                background: "linear-gradient(-45deg, #a855f7, #38bdf8)",
+                background: "linear-gradient(-45deg, #d946ef, #38bdf8)",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                textShadow:
+                  "0 0 40px rgba(217, 70, 239, 0.6), 0 0 60px rgba(56, 189, 248, 0.5)",
               }}
             >
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-[#ec4899] via-[#8b5cf6] to-[#06b6d4] opacity-0 blur-xl rounded-full -z-10"
+                initial={{ opacity: 0 }}
+                whileHover={{
+                  opacity: 0.8,
+                  scale: 1.4,
+                  transition: { duration: 0.3 },
+                }}
+                animate={{
+                  opacity: [0.1, 0.3, 0.1],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              ></motion.span>
+              <motion.div
+                className="absolute -inset-4 -z-10 pointer-events-none"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+              >
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1.5 h-1.5 bg-white rounded-full"
+                    initial={{
+                      x: 0,
+                      y: 0,
+                      opacity: 0,
+                      scale: 0,
+                    }}
+                    style={{
+                      left: `${20 + Math.random() * 60}%`,
+                      top: `${20 + Math.random() * 60}%`,
+                    }}
+                    animate={{
+                      opacity: [0, 1, 0],
+                      scale: [0, 1, 0],
+                      x: [0, (Math.random() - 0.5) * 40],
+                      y: [0, (Math.random() - 0.5) * 40],
+                    }}
+                    transition={{
+                      duration: 1 + Math.random() * 0.5,
+                      repeat: Infinity,
+                      delay: Math.random() * 0.5,
+                    }}
+                  />
+                ))}
+              </motion.div>
+              <motion.span
+                className="absolute -inset-1 rounded-lg opacity-0 -z-10"
+                style={{
+                  background: `linear-gradient(90deg, 
+                    rgba(236,72,153,0) 0%, 
+                    rgba(139,92,246,0.7) 50%, 
+                    rgba(6,182,212,0) 100%)`,
+                }}
+                initial={{ opacity: 0, rotate: 0 }}
+                whileHover={{
+                  opacity: 1,
+                  rotate: 360,
+                  transition: { duration: 2, repeat: Infinity, ease: "linear" },
+                }}
+              ></motion.span>
               3.0
-            </span>
+            </motion.span>
           </motion.h1>
 
           <div className="h-20 flex justify-center items-center mb-12">
             <AnimatePresence mode="wait">
               <motion.p
                 key={wordIndex}
-                className="text-2xl md:text-3xl lg:text-4xl font-bold text-white py-2"
+                className="text-2xl md:text-3xl lg:text-2xl font-bold text-white py-4"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}

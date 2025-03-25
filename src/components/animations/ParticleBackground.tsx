@@ -9,7 +9,7 @@ interface Particle {
   speedX: number;
   speedY: number;
   color: string;
-  shape: 'circle' | 'square' | 'triangle';
+  shape: "circle" | "square" | "triangle";
   rotation: number;
   rotationSpeed: number;
 }
@@ -18,7 +18,9 @@ interface ParticleBackgroundProps {
   containerRef?: React.RefObject<HTMLDivElement | HTMLElement | null>;
 }
 
-export default function ParticleBackground({ containerRef }: ParticleBackgroundProps = {}) {
+export default function ParticleBackground({
+  containerRef,
+}: ParticleBackgroundProps = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animationFrameId = useRef<number | null>(null);
@@ -28,43 +30,49 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
   const initParticles = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const particleCount = Math.min(
       Math.floor((canvas.width * canvas.height) / 80000), // Divisé par 2
-      6 // Nombre maximum de particules
+      7 // Nombre maximum de particules
     );
-    
+
     particlesRef.current = [];
 
     // Couleurs vibrantes pour une meilleure visibilité
     const colors = [
-      "rgb(0, 125, 167)", // Cyan
-      "rgb(89, 0, 184)", // Violet
+      "rgba(0, 125, 167, 0.6)", // Cyan avec transparence
+      "rgba(89, 0, 184, 0.6)", // Violet avec transparence
     ];
 
     // Types de formes
-    const shapes: Array<'circle' | 'square' | 'triangle'> = ['circle', 'square', 'triangle'];
+    const shapes: Array<"circle" | "square" | "triangle"> = [
+      "circle",
+      "square",
+      "triangle",
+    ];
 
     for (let i = 0; i < particleCount; i++) {
       // Taille importante pour une meilleure visibilité
-      const size = Math.random() * 25 + 50; // Particules entre 25 et 50px
+      const size = Math.random() * 25 + 75; // Particules entre 25 et 50px
       const shape = shapes[Math.floor(Math.random() * shapes.length)];
-      
+
       // Centrer davantage les particules
       // Calculer les positions avec une concentration au centre (25%-75% de la zone)
-      const centerBiasX = canvas.width * 0.25 + (Math.random() * canvas.width * 0.5);
-      const centerBiasY = canvas.height * 0.25 + (Math.random() * canvas.height * 0.5);
-      
+      const centerBiasX =
+        canvas.width * 0.25 + Math.random() * canvas.width * 0.5;
+      const centerBiasY =
+        canvas.height * 0.25 + Math.random() * canvas.height * 0.5;
+
       particlesRef.current.push({
         x: centerBiasX,
         y: centerBiasY,
         size,
-        speedX: (Math.random() - 0.3) * 1.5, // Vitesse réduite
-        speedY: (Math.random() - 0.3) * 1.5, // Vitesse réduite
+        speedX: (Math.random() - 0.3) * 4, // Vitesse réduite
+        speedY: (Math.random() - 0.3) * 4, // Vitesse réduite
         color: colors[Math.floor(Math.random() * colors.length)],
         shape,
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.01,
+        rotationSpeed: (Math.random() - 0.5) * 0.03,
       });
     }
   };
@@ -72,9 +80,9 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
   const initAnimationFrame = () => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
-    
+
     if (!canvas || !ctx) return;
-    
+
     // Tracking
     let lastFrameTime = 0;
     const FRAME_RATE = 30; // Limite à 30 FPS pour de meilleures performances
@@ -97,14 +105,14 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
         animationFrameId.current = requestAnimationFrame(animate);
         return;
       }
-      
+
       lastFrameTime = timestamp;
 
       // Effacer le canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Dessiner et mettre à jour chaque particule
-      particlesRef.current.forEach((particle) => {
+      particlesRef.current.forEach((particle, index) => {
         // Mettre à jour la position
         particle.x += particle.speedX;
         particle.y += particle.speedY;
@@ -118,20 +126,44 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
           particle.speedY *= -1;
         }
 
+        // Vérifier les collisions entre particules
+        particlesRef.current.forEach((otherParticle, otherIndex) => {
+          if (index !== otherIndex) {
+            const dx = otherParticle.x - particle.x;
+            const dy = otherParticle.y - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const minDistance = (particle.size + otherParticle.size) / 2;
+
+            if (distance < minDistance) {
+              // Inverser les vitesses des particules en collision
+              particle.speedX *= -1;
+              particle.speedY *= -1;
+              otherParticle.speedX *= -1;
+              otherParticle.speedY *= -1;
+            }
+          }
+        });
+
         // Dessiner la particule
         ctx.save();
         ctx.translate(particle.x, particle.y);
         ctx.rotate(particle.rotation);
-        
+
         ctx.fillStyle = particle.color;
-        
-        if (particle.shape === 'circle') {
+        ctx.globalAlpha = 0.7; // Ajout d'une transparence globale
+
+        if (particle.shape === "circle") {
           ctx.beginPath();
           ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2);
           ctx.fill();
-        } else if (particle.shape === 'square') {
-          ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
-        } else if (particle.shape === 'triangle') {
+        } else if (particle.shape === "square") {
+          ctx.fillRect(
+            -particle.size / 2,
+            -particle.size / 2,
+            particle.size,
+            particle.size
+          );
+        } else if (particle.shape === "triangle") {
           ctx.beginPath();
           ctx.moveTo(0, -particle.size / 2);
           ctx.lineTo(particle.size / 2, particle.size / 2);
@@ -139,7 +171,7 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
           ctx.closePath();
           ctx.fill();
         }
-        
+
         ctx.restore();
       });
 
@@ -182,14 +214,14 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
 
     // Mettre à jour la taille du canvas lors du montage et redimensionnement
     updateCanvasSize();
-    window.addEventListener('resize', updateCanvasSize);
+    window.addEventListener("resize", updateCanvasSize);
 
     // Observer container resize if applicable
     let resizeObserver: ResizeObserver | null = null;
-    
+
     // Capture la référence actuelle du conteneur pour l'utiliser dans le nettoyage
     const currentContainerRef = containerRef?.current;
-    
+
     if (currentContainerRef) {
       resizeObserver = new ResizeObserver(updateCanvasSize);
       resizeObserver.observe(currentContainerRef);
@@ -200,7 +232,7 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
 
     // Nettoyer quand le composant est démonté
     return () => {
-      window.removeEventListener('resize', updateCanvasSize);
+      window.removeEventListener("resize", updateCanvasSize);
       if (resizeObserver) {
         if (currentContainerRef) {
           resizeObserver.unobserve(currentContainerRef);
@@ -214,10 +246,14 @@ export default function ParticleBackground({ containerRef }: ParticleBackgroundP
   return (
     <canvas
       ref={canvasRef}
-      className={containerRef ? "absolute inset-0 w-full h-full -z-10" : "fixed inset-0 w-full h-full -z-10"}
-      style={{ 
+      className={
+        containerRef
+          ? "absolute inset-0 w-full h-full -z-10"
+          : "fixed inset-0 w-full h-full -z-10"
+      }
+      style={{
         pointerEvents: "none",
-        filter: "contrast(1.9) brightness(1.9) blur(5px)" // Augmentation du contraste, luminosité et flou
+        filter: "contrast(1.6) brightness(1.7) blur(7px)", // Ajustement des filtres pour les particules transparentes
       }}
     ></canvas>
   );
