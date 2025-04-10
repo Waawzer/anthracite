@@ -11,11 +11,9 @@ import {
 import ParticleBackground from "../animations/ParticleBackground";
 
 const rotatingWords = [
-  "aux tendances actuelles",
-  "aux animations fluides",
-  "modernisé et attrayant",
-  "pour une expérience utilisateur",
-  "et revisité pour le référencement",
+  "Applications web entièrement personnalisées",
+  "Sites vitrines modernes sur mesure",
+  "E-commerce performants et SEO optimisé",
 ];
 
 export default function HeroSection() {
