@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Anthracite Applications | Agence de développement web",
+  title: "Anthracite Applications | Créations Digitales Singulières",
   description:
-    "L'avant-garde du développement web. Créations d'expériences immersives et captivantes pour transformer votre présence digitale.",
+    "Développement web sur mesure alliant technique et créativité. Du site vitrine simple à l'application complexe, solutions adaptées aux besoins réels.",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -65,7 +66,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-[#e5e5e5]`}
       >
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

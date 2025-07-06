@@ -17,35 +17,35 @@ interface AutoReplyEmailProps {
   subject?: string;
 }
 
-export const AutoReplyEmail = ({
-  name,
-  subject = 'votre message',
-}: AutoReplyEmailProps) => {
+export default function AutoReplyEmail({
+  name = 'Client',
+  subject = 'le message',
+}: AutoReplyEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Merci pour votre message - Anthracite Applications</Preview>
+      <Preview>Accusé de réception - Anthracite Applications</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Heading style={heading}>
-            Bonjour {name},
+          <Section style={logoContainer}>
+            <Heading style={logo}>Anthracite Applications</Heading>
+          </Section>
+          <Heading style={h1}>
+            Message bien reçu, {name}
           </Heading>
           <Text style={paragraph}>
-            Merci d&apos;avoir pris contact avec moi concernant les {subject.toLowerCase()}.
+            Votre message concernant {subject.toLowerCase()} a été transmis avec succès.
           </Text>
           <Text style={paragraph}>
-            J&apos;ai bien reçu votre message et je vous répondrai personnellement dans les plus brefs délais, 
-            généralement sous 24h ouvrées.
+            Une attention particulière sera portée à votre demande et une réponse personnalisée sera transmise dans les plus brefs délais,
+            généralement sous 48 heures ouvrées.
           </Text>
-          <Hr style={hr} />
-          <Section>
-            <Text style={paragraph}>
-              En attendant, n&apos;hésitez pas à consulter mon portfolio de projets sur le site.
-            </Text>
-            <Text style={paragraph}>
-              Si votre demande est urgente, vous pouvez me joindre directement par téléphone au +33 6 31 15 67 84.
-            </Text>
-          </Section>
+          <Text style={paragraph}>
+            En attendant, n'hésitez pas à explorer les créations présentées sur le portail.
+          </Text>
+          <Text style={paragraph}>
+            Pour les demandes urgentes, un contact direct reste possible au +33 6 31 15 67 84.
+          </Text>
           <Hr style={hr} />
           <Text style={paragraph}>
             Bien cordialement,
@@ -66,7 +66,7 @@ export const AutoReplyEmail = ({
       </Body>
     </Html>
   );
-};
+}
 
 // Styles
 const main = {
@@ -84,7 +84,23 @@ const container = {
   maxWidth: '600px',
 };
 
-const heading = {
+const logoContainer = {
+  textAlign: 'center' as const,
+  marginBottom: '2rem',
+};
+
+const logo = {
+  fontSize: '24px',
+  lineHeight: '1.3',
+  fontWeight: '700',
+  color: '#ffffff',
+  backgroundImage: 'linear-gradient(to right, #8a2be2, #00bfff)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  padding: '0.2rem 0',
+};
+
+const h1 = {
   fontSize: '24px',
   lineHeight: '1.3',
   fontWeight: '700',
@@ -124,6 +140,4 @@ const footer = {
   fontSize: '14px',
   color: '#737373',
   margin: '2rem 0 0',
-};
-
-export default AutoReplyEmail; 
+}; 

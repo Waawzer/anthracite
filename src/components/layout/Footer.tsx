@@ -3,16 +3,18 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
 
   const footerLinks = [
-    { name: "Accueil", href: "/" },
-    { name: "Services", href: "/#services" },
-    { name: "Réalisations", href: "/#realisations" },
-    { name: "Garanties", href: "/#garanties" },
-    { name: "Contact", href: "/contact" },
+    { name: t("nav.home"), href: "/" },
+    { name: t("nav.services"), href: "/#services" },
+    { name: t("nav.projects"), href: "/#realisations" },
+    { name: t("nav.guarantees"), href: "/#garanties" },
+    { name: t("nav.contact"), href: "/contact" },
   ];
 
   const socialLinks = [
@@ -76,12 +78,10 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
           >
             <h3 className="text-lg font-semibold text-primary mb-4">
-              À propos
+              {t("footer.about")}
             </h3>
             <p className="text-secondary text-sm mb-4 max-w-md">
-              Anthracite Applications est le site d&apos;un free-lance en
-              développement web avant-gardiste, spécialisé dans la création
-              d&apos;expériences web immersives et performantes.
+              {t("footer.aboutText")}
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((link) => (
@@ -107,7 +107,7 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h3 className="text-lg font-semibold text-primary mb-4">
-              Navigation
+              {t("footer.navigation")}
             </h3>
             <ul className="space-y-2">
               {footerLinks.map((link) => (
@@ -130,15 +130,15 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-lg font-semibold text-primary mb-4">Contact</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">{t("footer.contact")}</h3>
             <address className="not-italic">
-              <p className="text-secondary text-sm mb-2">Grenoble, France</p>
+              <p className="text-secondary text-sm mb-2">{t("footer.location")}</p>
               <p className="text-secondary text-sm mb-2">
                 <a
                   href="mailto:contact@anthracite-applications.com"
                   className="hover:text-accent transition-colors"
                 >
-                  contact@anthracite.app
+                  {t("footer.email")}
                 </a>
               </p>
               <p className="text-secondary text-sm">
@@ -146,7 +146,7 @@ export default function Footer() {
                   href="tel:+33123456789"
                   className="hover:text-accent transition-colors"
                 >
-                  +33 6 31 15 67 84
+                  {t("footer.phone")}
                 </a>
               </p>
             </address>
@@ -161,7 +161,7 @@ export default function Footer() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <p className="text-muted text-sm">
-            &copy; {currentYear} Anthracite Applications. Tous droits réservés.
+            &copy; {currentYear} {t("footer.copyright")}
           </p>
         </motion.div>
       </div>

@@ -8,20 +8,23 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-
-const navItems = [
-  { name: "Accueil", href: "/", delay: 0.1 },
-  { name: "Services", href: "/#services", delay: 0.2 },
-  { name: "Réalisations", href: "/#realisations", delay: 0.3 },
-  { name: "Garanties", href: "/#garanties", delay: 0.4 },
-  { name: "Contact", href: "/contact", delay: 0.5 },
-];
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageToggle from "@/components/common/LanguageToggle";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("/");
   const { scrollY } = useScroll();
+  const { t } = useLanguage();
+
+  const navItems = [
+    { name: t("nav.home"), href: "/", delay: 0.1 },
+    { name: t("nav.services"), href: "/#services", delay: 0.2 },
+    { name: t("nav.projects"), href: "/#realisations", delay: 0.3 },
+    { name: t("nav.guarantees"), href: "/#garanties", delay: 0.4 },
+    { name: t("nav.contact"), href: "/contact", delay: 0.5 },
+  ];
 
   // Animation values based on scroll - simplified ranges
   const headerOpacity = useTransform(scrollY, [0, 50], [0.95, 1]);
@@ -238,8 +241,9 @@ export default function Header() {
               </motion.div>
             </motion.div>
 
-            {/* Menu Button with glow effect */}
-            <div>
+            {/* Language Toggle and Menu Button */}
+            <div className="flex items-center space-x-4">
+              <LanguageToggle />
               <button
                 type="button"
                 className="relative inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-primary focus:outline-none group"

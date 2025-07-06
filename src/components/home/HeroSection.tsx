@@ -9,18 +9,20 @@ import {
   useTransform,
 } from "framer-motion";
 import ParticleBackground from "../animations/ParticleBackground";
-
-const rotatingWords = [
-  "Applications web entièrement personnalisées",
-  "Sites vitrines modernes sur mesure",
-  "E-commerce performants et SEO optimisé",
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { t } = useLanguage();
+
+  const rotatingWords = [
+    t("hero.rotatingWords.0"),
+    t("hero.rotatingWords.1"),
+    t("hero.rotatingWords.2"),
+  ];
 
   // Effect pour initialiser le drapeau client-only après le montage
   useEffect(() => {
@@ -149,7 +151,7 @@ export default function HeroSection() {
                 "0 0 40px rgba(147, 51, 234, 0.4), 0 0 50px rgba(79, 70, 229, 0.3)",
             }}
           >
-            Votre site web{" "}
+{t("hero.title")}{" "}
             <motion.span
               className="relative inline-block"
               whileHover={{
@@ -231,7 +233,7 @@ export default function HeroSection() {
                   transition: { duration: 2, repeat: Infinity, ease: "linear" },
                 }}
               ></motion.span>
-              3.0
+              {t("hero.subtitle")}
             </motion.span>
           </motion.h1>
 
@@ -271,7 +273,7 @@ export default function HeroSection() {
               whileTap={{ scale: 0.98 }}
             >
               <span className="text-white font-semibold text-sm">
-                Découvrir
+                {t("hero.cta")}
               </span>
               <svg
                 className="ml-2.5 w-4.5 h-4.5"

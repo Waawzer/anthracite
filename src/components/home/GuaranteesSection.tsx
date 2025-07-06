@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import { useInView } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CounterProps {
   end: number;
@@ -65,29 +66,28 @@ function Counter({
 }
 
 export default function GuaranteesSection() {
+  const { t } = useLanguage();
+  
   const counters = [
     {
-      end: 98,
-      suffix: "%",
-      title: "Satisfaction Client",
-      description:
-        "Mes clients sont satisfaits de mon travail et me recommandent à leur entourage.",
+      end: 3,
+      suffix: t("guarantees.counters.0.suffix"),
+      title: t("guarantees.counters.0.title"),
+      description: t("guarantees.counters.0.description"),
       delay: 0.2,
     },
     {
-      end: 100,
-      suffix: "+",
-      title: "Projets Réalisés",
-      description:
-        "Plus d'une centaine de projets livrés avec succès pour des clients aux besoins variés.",
+      end: 15,
+      suffix: t("guarantees.counters.1.suffix"),
+      title: t("guarantees.counters.1.title"),
+      description: t("guarantees.counters.1.description"),
       delay: 0.4,
     },
     {
-      end: 24,
-      suffix: "/7",
-      title: "Disponibilité",
-      description:
-        "Je reste accessible et réponds rapidement à vos questions, même en dehors des heures de bureau.",
+      end: 48,
+      suffix: t("guarantees.counters.2.suffix"),
+      title: t("guarantees.counters.2.title"),
+      description: t("guarantees.counters.2.description"),
       delay: 0.6,
     },
   ];
@@ -110,14 +110,13 @@ export default function GuaranteesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Un vrai engagement
+            {t("guarantees.title")}
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16 py-3 px-4 rounded-lg">
-            Avec une approche personnalisée et des outils modernes, votre
-            free-lance vous offrera un service de qualité à un tarif accessible.
+            {t("guarantees.subtitle")}
           </p>
         </RevealOnScroll>
 
@@ -145,19 +144,16 @@ export default function GuaranteesSection() {
         >
           <div className="bg-card-bg p-8 rounded-xl border border-border text-center border-glow shadow-lg">
             <h3 className="text-2xl font-bold mb-4 gradient-accent">
-              Une Promesse
+              {t("guarantees.philosophy")}
             </h3>
             <p className="text-secondary mb-6">
-              Un free-lance qui s&apos;engage à livrer votre projet dans les
-              délais et le budget convenus. Votre satisfaction est une priorité,
-              je resterai disponible après la livraison pour m&apos;assurer que
-              tout fonctionne parfaitement.
+              {t("guarantees.philosophyText")}
             </p>
             <a
               href="/contact"
               className="inline-flex items-center justify-center px-7 py-4 border border-accent text-lg font-bold rounded-md text-white bg-gradient-to-r from-accent via-purple-500 to-blue-500 hover:from-accent/90 hover:via-purple-500/90 hover:to-blue-500/90 transition-all duration-300 shadow-lg hover:shadow-accent/20 hover:shadow-xl hover:scale-105 transform hover:-translate-y-1"
             >
-              Contactez-moi
+              {t("guarantees.cta")}
               <svg
                 className="ml-2 -mr-1 w-5 h-5"
                 fill="none"
@@ -182,40 +178,40 @@ export default function GuaranteesSection() {
           delay={0.4}
           className="max-w-4xl mx-auto"
         >
-          <div className="bg-card-bg border border-accent/20 p-10 rounded-2xl shadow-lg">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-              <div className="lg:w-2/3">
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#ec4899] via-[#8b5cf6] to-[#06b6d4] shadow-lg">
-                  Le web évolue, <br /> votre site doit suivre
-                </h3>
-                <p className="text-secondary text-lg mb-6">
-                  Ne laissez pas votre site web devenir obsolète. Un site
-                  moderne et performant vous aide à vous démarquer et à attirer
-                  de nouveaux clients. Je vous accompagne pour créer une
-                  présence en ligne qui vous ressemble vraiment.
-                </p>
-                <ul className="space-y-2 mb-8">
-                  {[
-                    "Design responsive parfaitement adapté à tous les écrans",
-                    "Optimisation des performances pour un meilleur référencement",
-                    "Expérience utilisateur intuitive qui convertit vos visiteurs",
-                    "Suivi et maintenance pour garder votre site à jour",
-                  ].map((item, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <svg
-                        className="h-5 w-5 text-accent mt-1 mr-2 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>{item}</span>
+                      <div className="bg-card-bg border border-accent/20 p-10 rounded-2xl shadow-lg">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div className="lg:w-2/3">
+                  <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#ec4899] via-[#8b5cf6] to-[#06b6d4] shadow-lg">
+                    {t("guarantees.pricing.title")} <br /> {t("guarantees.pricing.subtitle")}
+                  </h3>
+                  <p className="text-secondary text-lg mb-6">
+                    {t("guarantees.pricing.description")}
+                  </p>
+                  <ul className="space-y-2 mb-8">
+                    {[
+                      t("guarantees.pricing.features.0"),
+                      t("guarantees.pricing.features.1"),
+                      t("guarantees.pricing.features.2"),
+                      t("guarantees.pricing.features.3"),
+                    ].map((feature, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mr-3 mt-0.5">
+                        <svg
+                          className="w-3 h-3 text-accent"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-secondary text-base">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -225,14 +221,13 @@ export default function GuaranteesSection() {
                 <div className="bg-card-bg rounded-xl p-6 border border-accent/30 shadow-lg text-center relative overflow-hidden">
                   <div className="absolute -right-10 -top-10 w-40 h-40 bg-accent/10 rounded-full blur-2xl"></div>
                   <h4 className="text-lg text-secondary font-medium mb-2">
-                    À partir de
+                    Tarification
                   </h4>
                   <div className="text-5xl font-bold gradient-accent glow mb-2">
-                    200€
+                    {t("guarantees.pricing.amount")}
                   </div>
                   <p className="text-secondary mb-6">
-                    Un investissement unique pour booster votre présence en
-                    ligne
+                    {t("guarantees.pricing.description")}
                   </p>
                   <motion.div className="relative group">
                     <motion.div
@@ -252,7 +247,7 @@ export default function GuaranteesSection() {
                       whileHover={{ scale: 1.03, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      Obtenir un devis gratuit
+                      {t("guarantees.pricing.contact")}
                       <motion.span className="absolute -z-10 inset-0 rounded-lg bg-background/10 backdrop-blur-sm"></motion.span>
                     </motion.a>
                   </motion.div>

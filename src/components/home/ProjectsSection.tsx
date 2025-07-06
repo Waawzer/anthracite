@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Project {
   id: string;
@@ -19,37 +20,35 @@ export default function ProjectsSection() {
   const [direction, setDirection] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const { t } = useLanguage();
 
   const projects: Project[] = [
     {
       id: "1",
-      title: "Studio d'Enregistrement",
-      description:
-        "Site vitrine pour un studio d'enregistrement professionnel avec réservation de sessions, présentation des services et galerie de productions. Interface élégante avec animations fluides.",
+      title: t("projects.projects.0.title"),
+      description: t("projects.projects.0.description"),
       siteUrl: "https://projetk.vercel.app/",
       liveUrl: "https://projetk.vercel.app/",
-      category: "Site Vitrine",
+      category: t("projects.projects.0.category"),
       technologies: ["Next.js", "Tailwind CSS", "Framer Motion"],
     },
     {
       id: "2",
-      title: "Boulangerie Artisanale",
-      description:
-        "Site pour une boulangerie alliant tradition et modernité. Présentation des produits artisanaux, philosophie de la marque et coordonnées dans une interface moderne et chaleureuse.",
+      title: t("projects.projects.1.title"),
+      description: t("projects.projects.1.description"),
       siteUrl: "https://boulangerie-sand.vercel.app/",
       liveUrl: "https://boulangerie-sand.vercel.app/",
-      category: "Site Vitrine",
+      category: t("projects.projects.1.category"),
       technologies: ["React", "Next.js", "Tailwind CSS"],
     },
     {
       id: "3",
-      title: "Agence Creative",
-      description:
-        "Site vitrine immersif présentant les services et réalisations d'une agence créative. Expérience utilisateur narrative avec animations avancées et intégration 3D.",
-      siteUrl: "https://stripe.com/fr",
-      liveUrl: "https://stripe.com/fr",
-      category: "Site Vitrine",
-      technologies: ["Three.js", "GSAP", "WebGL"],
+      title: t("projects.projects.2.title"),
+      description: t("projects.projects.2.description"),
+      siteUrl: "https://projetk.vercel.app/",
+      liveUrl: "https://projetk.vercel.app/",
+      category: t("projects.projects.2.category"),
+      technologies: ["Next.js", "GSAP", "Tailwind CSS"],
     },
   ];
 
@@ -97,13 +96,13 @@ export default function ProjectsSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Quelques Réalisations
+            {t("projects.title")}
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-16">
-            Découvrez une sélection de projets innovants et performants.
+            {t("projects.subtitle")}
           </p>
         </RevealOnScroll>
 
@@ -148,7 +147,7 @@ export default function ProjectsSection() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      <p className="text-secondary">Chargement du site...</p>
+                      <p className="text-secondary">{t("projects.loading")}</p>
                     </div>
                   </div>
                 )}
@@ -160,7 +159,7 @@ export default function ProjectsSection() {
                   onLoad={handleIframeLoad}
                   className="w-full h-full border-0"
                   sandbox="allow-same-origin allow-scripts"
-                  title={`Aperçu de ${currentProject.title}`}
+                  title={`${t("projects.loading")} ${currentProject.title}`}
                 />
 
                 {/* Overlay with project info - now with hover behavior inverted */}
@@ -194,7 +193,7 @@ export default function ProjectsSection() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-sm text-white font-medium border-b border-accent hover:border-white transition-colors"
                   >
-                    Visiter le site
+                    {t("projects.visitSite")}
                     <svg
                       className="ml-2 w-4 h-4"
                       fill="none"

@@ -1,16 +1,13 @@
+"use client";
+
 import React from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/contact/ContactForm";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Contact | Anthracite Apps",
-  description:
-    "Contactez-moi pour discuter de votre projet web. Je suis à votre écoute et prêt à répondre à vos besoins spécifiques.",
-};
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   return (
     <>
       <Header />
@@ -25,11 +22,10 @@ export default function ContactPage() {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-16">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-accent via-purple-500 to-blue-500">
-                  Parlons de votre projet
+                  {t("contactPage.title")}
                 </h1>
                 <p className="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-                  Transformons votre vision en réalité numérique. 
-                  Prenez contact pour que nous puissions discuter de votre projet ensemble.
+                  {t("contactPage.subtitle")}
                 </p>
               </div>
 
@@ -37,7 +33,7 @@ export default function ContactPage() {
                 <div className="lg:col-span-2 order-2 lg:order-1">
                   <div className="bg-card-bg p-8 rounded-2xl shadow-lg border border-accent/10 h-full backdrop-blur-sm">
                     <h2 className="text-2xl font-bold mb-6 gradient-accent">
-                      Mes coordonnées
+                      {t("contactPage.channels.title")}
                     </h2>
 
                     <div className="space-y-8">
@@ -60,14 +56,14 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-primary mb-1">
-                            Email
+                            {t("contactPage.channels.email")}
                           </h3>
                           <p className="text-secondary">
                             <a
                               href="mailto:contact@anthracite.app"
                               className="hover:text-accent transition-colors"
                             >
-                              contact@anthracite.app
+                              {t("footer.email")}
                             </a>
                           </p>
                         </div>
@@ -92,14 +88,14 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-primary mb-1">
-                            Téléphone
+                            {t("contactPage.channels.phone")}
                           </h3>
                           <p className="text-secondary">
                             <a
                               href="tel:+33631156784"
                               className="hover:text-accent transition-colors"
                             >
-                              +33 6 31 15 67 84
+                              {t("footer.phone")}
                             </a>
                           </p>
                         </div>
@@ -130,19 +126,19 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-primary mb-1">
-                            Adresse
+                            {t("contactPage.channels.location")}
                           </h3>
-                          <p className="text-secondary">Grenoble, France</p>
+                          <p className="text-secondary">{t("footer.location")}</p>
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-12 p-6 bg-gradient-to-br from-accent/5 to-primary/5 rounded-xl border border-accent/10">
                       <h3 className="text-xl font-semibold mb-2 text-primary">
-                        À partir de 200€
+                        {t("contactPage.approach.title")}
                       </h3>
                       <p className="text-secondary mb-4">
-                        Des solutions web modernes et sur mesure adaptées à votre budget
+                        {t("contactPage.approach.description")}
                       </p>
                       <div className="flex gap-2">
                         <div className="w-1/3 h-1 bg-accent/30 rounded-full"></div>
@@ -159,7 +155,7 @@ export default function ContactPage() {
                     <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
 
                     <h2 className="text-2xl font-bold mb-6 gradient-accent">
-                      Envoyez-moi un message
+                      {t("contactPage.form.title")}
                     </h2>
                     <ContactForm />
                   </div>
@@ -168,7 +164,7 @@ export default function ContactPage() {
 
               <div className="text-center mt-12 text-secondary">
                 <p>
-                  Je réponds généralement dans un délai de 24 heures ouvrées.
+                  {t("contactPage.responseTime")}
                 </p>
               </div>
             </div>

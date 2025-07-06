@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { motion, useAnimationControls } from "framer-motion";
+import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
 import RevealOnScroll from "../animations/RevealOnScroll";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Define the shape types for the card bottom shapes
 interface CardShape {
@@ -34,23 +35,24 @@ function ServiceCard({
   // Références et états
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
+  const shouldReduceMotion = useReducedMotion();
 
   // Animation pour l'expansion du contenu
   useEffect(() => {
     if (isExpanded) {
       controls.start({
-        scale: 1.01,
+        scale: shouldReduceMotion ? 1 : 1.01,
         boxShadow: "0 12px 30px rgba(0, 0, 0, 0.15)",
-        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: shouldReduceMotion ? 0.2 : 0.5, ease: [0.22, 1, 0.36, 1] },
       });
     } else {
       controls.start({
         scale: 1,
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-        transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: shouldReduceMotion ? 0.2 : 0.4, ease: [0.22, 1, 0.36, 1] },
       });
     }
-  }, [isExpanded, controls]);
+  }, [isExpanded, controls, shouldReduceMotion]);
 
   return (
     <RevealOnScroll delay={service.delay} className="group relative">
@@ -123,18 +125,17 @@ function ServiceCard({
         <div className="flex items-center mb-6 z-10">
           <motion.div
             className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent mr-4"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: shouldReduceMotion ? 1 : 1.05 }}
             animate={
-              isExpanded
+              isExpanded && !shouldReduceMotion
                 ? {
-                    scale: [1, 1.05, 1],
-                    rotate: [0, 3, -3, 0],
+                    scale: [1, 1.02, 1],
                   }
-                : { scale: 1, rotate: 0 }
+                : { scale: 1 }
             }
             transition={{
-              duration: 2.5,
-              repeat: isExpanded ? Infinity : 0,
+              duration: 4,
+              repeat: isExpanded && !shouldReduceMotion ? Infinity : 0,
               repeatType: "reverse",
               ease: "easeInOut",
             }}
@@ -179,15 +180,14 @@ function ServiceCard({
               <motion.span
                 className="inline-block mr-2 text-accent"
                 animate={{
-                  rotate: isExpanded ? [0, 5, -5, 0] : 0,
-                  scale: isExpanded ? [1, 1.1, 1] : 1,
+                  scale: isExpanded && !shouldReduceMotion ? [1, 1.05, 1] : 1,
                 }}
                 transition={{
                   duration: 3,
                   ease: "easeInOut",
-                  repeat: isExpanded ? Infinity : 0,
+                  repeat: isExpanded && !shouldReduceMotion ? Infinity : 0,
                   repeatType: "reverse",
-                  repeatDelay: 2,
+                  repeatDelay: 1,
                 }}
               >
                 <svg
@@ -205,22 +205,22 @@ function ServiceCard({
                   />
                 </svg>
               </motion.span>
-              Mes prestations incluent:
+              Capacités incluses:
             </h4>
             <ul className="space-y-4">
               {service.extendedDescription.map((item, idx) => (
                 <motion.li
                   key={idx}
                   className="flex items-start"
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -10 }}
                   animate={{
                     opacity: isExpanded ? 1 : 0,
-                    x: isExpanded ? 0 : -10,
+                    x: isExpanded ? 0 : shouldReduceMotion ? 0 : -10,
                   }}
                   transition={{
-                    duration: 0.4,
-                    delay: isExpanded ? idx * 0.07 : 0,
-                    ease: [0.16, 1, 0.3, 1],
+                    duration: shouldReduceMotion ? 0.1 : 0.3,
+                    delay: isExpanded && !shouldReduceMotion ? Math.min(idx * 0.05, 0.3) : 0,
+                    ease: "easeOut",
                   }}
                 >
                   <motion.div
@@ -304,6 +304,7 @@ export default function ServicesSection() {
     null
   );
   const [isAnimating, setIsAnimating] = useState(false);
+  const { t } = useLanguage();
 
   // Toggle avec animation fluide
   const toggleServiceDetails = (serviceId: string) => {
@@ -333,16 +334,14 @@ export default function ServicesSection() {
   const services: ServiceData[] = [
     {
       id: "site-vitrine",
-      title: "Sites Vitrines",
-      description:
-        "Des sites web élégants qui reflètent votre identité et vos valeurs. Chaque projet est optimisé pour le référencement et l'expérience utilisateur.",
+      title: t("services.services.0.title"),
+      description: t("services.services.0.description"),
       extendedDescription: [
-        "Design sur mesure adapté à votre identité visuelle",
-        "Optimisation SEO pour être visible sur Google",
-        "Intégration avec vos réseaux sociaux et analytics",
-        "Formulaires de contact et cartes interactives",
-        "Navigation intuitive pensée pour vos visiteurs",
-        "Maintenance et mises à jour techniques",
+        t("services.services.0.extendedDescription.0"),
+        t("services.services.0.extendedDescription.1"),
+        t("services.services.0.extendedDescription.2"),
+        t("services.services.0.extendedDescription.3"),
+        t("services.services.0.extendedDescription.4"),
       ],
       icon: (
         <svg
@@ -365,16 +364,14 @@ export default function ServicesSection() {
     },
     {
       id: "applications-web",
-      title: "Applications Web",
-      description:
-        "Développement d'applications web interactives et sur mesure qui répondent précisément à vos besoins. Mes solutions évoluent avec votre activité.",
+      title: t("services.services.1.title"),
+      description: t("services.services.1.description"),
       extendedDescription: [
-        "Développement avec les technologies les plus récentes",
-        "Interfaces utilisateur intuitives et réactives",
-        "Système d'authentification sécurisé",
-        "Tableaux de bord et visualisations de données",
-        "API et intégrations avec vos services existants",
-        "Architecture évolutive pour accompagner votre croissance",
+        t("services.services.1.extendedDescription.0"),
+        t("services.services.1.extendedDescription.1"),
+        t("services.services.1.extendedDescription.2"),
+        t("services.services.1.extendedDescription.3"),
+        t("services.services.1.extendedDescription.4"),
       ],
       icon: (
         <svg
@@ -397,16 +394,14 @@ export default function ServicesSection() {
     },
     {
       id: "e-commerce",
-      title: "E-commerce",
-      description:
-        "Réalisations de boutiques en ligne performantes offrant une expérience d'achat fluide et sécurisée, optimisées pour convertir vos visiteurs en clients.",
+      title: t("services.services.2.title"),
+      description: t("services.services.2.description"),
       extendedDescription: [
-        "Solutions personnalisées (Shopify, WooCommerce ou sur mesure)",
-        "Gestion automatisée de votre catalogue et de vos stocks",
-        "Systèmes de paiement 100% sécurisés",
-        "Optimisation du parcours d'achat pour maximiser les conversions",
-        "Connexion avec vos outils CRM et ERP",
-        "Fonctionnalités marketing: réductions, codes promo, ventes croisées",
+        t("services.services.2.extendedDescription.0"),
+        t("services.services.2.extendedDescription.1"),
+        t("services.services.2.extendedDescription.2"),
+        t("services.services.2.extendedDescription.3"),
+        t("services.services.2.extendedDescription.4"),
       ],
       icon: (
         <svg
@@ -452,14 +447,13 @@ export default function ServicesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll>
           <h2 className="text-3xl md:text-4xl font-bold text-center gradient-accent glow mb-4">
-            Les Services
+            {t("services.title")}
           </h2>
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.1}>
           <p className="text-xl text-secondary text-center max-w-3xl mx-auto mb-12 bg-background/80 backdrop-blur-sm py-3 px-4 rounded-lg">
-            Des solutions web sur mesure qui répondent parfaitement à vos
-            besoins spécifiques.
+            {t("services.subtitle")}
           </p>
         </RevealOnScroll>
 
@@ -495,8 +489,8 @@ export default function ServicesSection() {
           >
             <span>
               {expandedServiceId === "all"
-                ? "Masquer les détails"
-                : "Afficher tous les détails"}
+                ? t("services.collapseAll")
+                : t("services.expandAll")}
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"

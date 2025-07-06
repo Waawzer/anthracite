@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface FormState {
   name: string;
@@ -22,6 +23,8 @@ interface ApiError extends Error {
 }
 
 export default function ContactForm() {
+  const { t } = useLanguage();
+  
   const [formState, setFormState] = useState<FormState>({
     name: "",
     email: "",
@@ -45,17 +48,17 @@ export default function ContactForm() {
     const newErrors: FormErrors = {};
 
     if (!formState.name.trim()) {
-      newErrors.name = "Le nom est requis";
+      newErrors.name = t("contactForm.validation.nameRequired");
     }
 
     if (!formState.email.trim()) {
-      newErrors.email = "L'email est requis";
+      newErrors.email = t("contactForm.validation.emailRequired");
     } else if (!validateEmail(formState.email)) {
-      newErrors.email = "Format d'email invalide";
+      newErrors.email = t("contactForm.validation.emailInvalid");
     }
 
     if (!formState.message.trim()) {
-      newErrors.message = "Le message est requis";
+      newErrors.message = t("contactForm.validation.messageRequired");
     }
 
     setErrors(newErrors);
@@ -151,11 +154,10 @@ export default function ContactForm() {
           </svg>
         </div>
         <h3 className="text-2xl font-bold text-primary mb-2">
-          Message envoyé !
+          {t("contactForm.success.title")}
         </h3>
         <p className="text-secondary mb-6">
-          Merci de m&apos;avoir contacté. Je vous répondrai personnellement dans
-          les meilleurs délais.
+          {t("contactForm.success.message")}
         </p>
         <button
           onClick={() => {
@@ -170,7 +172,7 @@ export default function ContactForm() {
           }}
           className="px-6 py-2 bg-accent hover:bg-accent-secondary text-white rounded-md transition-colors duration-300"
         >
-          Envoyer un autre message
+          {t("contactForm.success.sendAnother")}
         </button>
       </motion.div>
     );
@@ -231,7 +233,7 @@ export default function ContactForm() {
                 className={`w-full px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
                   errors.name ? "border-red-500" : "border-border"
                 }`}
-                placeholder="Votre nom"
+                placeholder="Nom complet"
               />
             </motion.div>
             {errors.name && (
@@ -259,7 +261,7 @@ export default function ContactForm() {
                 className={`w-full px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
                   errors.email ? "border-red-500" : "border-border"
                 }`}
-                placeholder="votre@email.com"
+                placeholder="adresse@email.com"
               />
             </motion.div>
             {errors.email && (
@@ -333,7 +335,7 @@ export default function ContactForm() {
                 className={`w-full px-4 py-2 border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-accent transition-all resize-none ${
                   errors.message ? "border-red-500" : "border-border"
                 }`}
-                placeholder="Décrivez votre projet ou votre besoin..."
+                placeholder="Décrivez l'univers que vous souhaitez créer..."
               ></textarea>
             </motion.div>
             {errors.message && (

@@ -36,7 +36,7 @@ export const ContactFormEmail = ({
             Nouveau message de {name}
           </Heading>
           <Text style={paragraph}>
-            Vous avez reçu un nouveau message via le formulaire de contact sur votre site Anthracite Applications.
+            Un nouveau message a été transmis via le portail de contact d'Anthracite Applications.
           </Text>
           <Section style={section}>
             <Heading as="h2" style={subheading}>
