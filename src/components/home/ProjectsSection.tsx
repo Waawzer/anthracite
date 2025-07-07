@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ResponsiveIframeViewer, ViewportSize } from "react-responsive-iframe-viewer";
 import RevealOnScroll from "../animations/RevealOnScroll";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -36,8 +37,8 @@ export default function ProjectsSection() {
       id: "2",
       title: t("projects.projects.1.title"),
       description: t("projects.projects.1.description"),
-      siteUrl: "https://boulangerie-sand.vercel.app/",
-      liveUrl: "https://boulangerie-sand.vercel.app/",
+      siteUrl: "https://color-burst-hero-splash.lovable.app/",
+      liveUrl: "https://color-burst-hero-splash.lovable.app/",
       category: t("projects.projects.1.category"),
       technologies: ["React", "Next.js", "Tailwind CSS"],
     },
@@ -256,111 +257,156 @@ export default function ProjectsSection() {
             </button>
           </div>
 
-          {/* Mobile alternative view */}
+          {/* Mobile responsive iframe view */}
           <div className="flex-1 md:hidden border border-border rounded-xl shadow-lg border-glow bg-card-bg overflow-hidden">
-            <div className="relative">
-              <div className="aspect-video w-full relative overflow-hidden">
-                {/* Screenshot placeholder - in production you would use real screenshots */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-800/30 to-cyan-800/30 flex items-center justify-center">
-                  <img
-                    src={`/screenshots/project-${currentProject.id}.svg`}
-                    alt={`Capture d'écran de ${currentProject.title}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback if image doesn't exist
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src = "/screenshots/placeholder.svg";
-                    }}
-                  />
-                </div>
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentProject.id}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+                className="relative"
+              >
+                <div className="relative">
+                  {/* Mobile responsive iframe container */}
+                  <div className="relative" style={{ height: '400px' }}>
+                    {/* Loading indicator */}
+                    {isLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-card-bg z-20">
+                        <div className="flex flex-col items-center">
+                          <svg
+                            className="animate-spin h-8 w-8 text-accent mb-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          <p className="text-secondary text-sm">{t("projects.loading")}</p>
+                        </div>
+                      </div>
+                    )}
 
-                {/* Navigation buttons for mobile */}
-                <button
-                  onClick={() => navigate(-1)}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-accent/80 transition-colors z-10"
-                  aria-label="Projet précédent"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 19l-7-7 7-7"
-                    ></path>
-                  </svg>
-                </button>
-                <button
-                  onClick={() => navigate(1)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-accent/80 transition-colors z-10"
-                  aria-label="Projet suivant"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 5l7 7-7 7"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-              <div className="p-6 bg-card-bg">
-                <span className="inline-block px-3 py-1 bg-accent rounded-full text-xs text-white font-semibold mb-2">
-                  {currentProject.category}
-                </span>
-                <h3 className="text-white text-2xl font-bold mb-2">
-                  {currentProject.title}
-                </h3>
-                <p className="text-gray-200 mb-4 text-sm">
-                  {currentProject.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {currentProject.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-xs px-2 py-1 rounded bg-background/30 text-white"
+                    {/* Responsive iframe viewer for mobile */}
+                    <ResponsiveIframeViewer
+                      src={currentProject.siteUrl}
+                      title={currentProject.title}
+                      size={ViewportSize.mobile}
+                      showControls={false}
+                      allowResizingX={false}
+                      allowResizingY={false}
+                      fluidX={true}
+                      onIframeLoad={handleIframeLoad}
+                    />
+
+                    {/* Navigation buttons for mobile */}
+                    <button
+                      onClick={() => navigate(-1)}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-accent/80 transition-colors z-30 border-glow"
+                      aria-label="Projet précédent"
                     >
-                      {tech}
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M15 19l-7-7 7-7"
+                        ></path>
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => navigate(1)}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-background/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-accent/80 transition-colors z-30 border-glow"
+                      aria-label="Projet suivant"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Project info section */}
+                  <div className="p-6 bg-card-bg">
+                    <span className="inline-block px-3 py-1 bg-accent rounded-full text-xs text-white font-semibold mb-2">
+                      {currentProject.category}
                     </span>
-                  ))}
+                    <h3 className="text-white text-2xl font-bold mb-2">
+                      {currentProject.title}
+                    </h3>
+                    <p className="text-gray-200 mb-4 text-sm">
+                      {currentProject.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {currentProject.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-xs px-2 py-1 rounded bg-background/30 text-white"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <a
+                      href={currentProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-full py-3 px-4 mt-2 text-sm text-white font-medium bg-accent hover:bg-accent/80 rounded-md transition-colors"
+                    >
+                      {t("projects.visitSite")}
+                      <svg
+                        className="ml-2 w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        ></path>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
-                <a
-                  href={currentProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-full py-3 px-4 mt-2 text-sm text-white font-medium bg-accent hover:bg-accent/80 rounded-md transition-colors"
-                >
-                  Visiter le site
-                  <svg
-                    className="ml-2 w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    ></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 

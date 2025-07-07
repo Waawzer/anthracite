@@ -17,6 +17,7 @@
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-responsive-iframe-viewer": "^1.2.2",
     "resend": "^4.1.2",
     "three": "^0.174.0"
   },
