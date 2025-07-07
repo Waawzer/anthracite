@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "react-responsive-iframe-viewer/dist/style.css";
 
 :root {
   --black: #0a0a0a;

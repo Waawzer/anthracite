@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ResponsiveIframeViewer, ViewportSize } from "react-responsive-iframe-viewer";
+
 import RevealOnScroll from "../animations/RevealOnScroll";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -46,8 +46,8 @@ export default function ProjectsSection() {
       id: "3",
       title: t("projects.projects.2.title"),
       description: t("projects.projects.2.description"),
-      siteUrl: "https://projetk.vercel.app/",
-      liveUrl: "https://projetk.vercel.app/",
+      siteUrl: "https://neutral.money/",
+      liveUrl: "https://neutral.money/",
       category: t("projects.projects.2.category"),
       technologies: ["Next.js", "GSAP", "Tailwind CSS"],
     },
@@ -305,16 +305,19 @@ export default function ProjectsSection() {
                       </div>
                     )}
 
-                    {/* Responsive iframe viewer for mobile */}
-                    <ResponsiveIframeViewer
+                    {/* Mobile iframe with responsive scaling */}
+                    <iframe
                       src={currentProject.siteUrl}
-                      title={currentProject.title}
-                      size={ViewportSize.mobile}
-                      showControls={false}
-                      allowResizingX={false}
-                      allowResizingY={false}
-                      fluidX={true}
-                      onIframeLoad={handleIframeLoad}
+                      onLoad={handleIframeLoad}
+                      className="w-full h-full border-0 rounded-lg"
+                      sandbox="allow-same-origin allow-scripts"
+                      title={`${t("projects.loading")} ${currentProject.title}`}
+                      style={{
+                        transform: 'scale(0.8)',
+                        transformOrigin: 'top left',
+                        width: '125%', // Compensate for the scale
+                        height: '125%' // Compensate for the scale
+                      }}
                     />
 
                     {/* Navigation buttons for mobile */}
