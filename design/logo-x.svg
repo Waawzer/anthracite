@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients principaux -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f0abfc;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#818cf8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7dd3fc;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0" />
+    </radialGradient>
+    
+    <!-- Filtres pour les effets glow -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Fond sombre -->
+  <rect width="400" height="400" fill="#0a0a0a"/>
+  
+  <!-- Effet de glow d'arrière-plan -->
+  <circle cx="200" cy="200" r="150" fill="url(#glowGradient)" opacity="0.3"/>
+  
+  <!-- Formes géométriques décoratives -->
+  <!-- Cercle décoratif en haut à gauche -->
+  <circle cx="80" cy="80" r="12" fill="#ec4899" opacity="0.6" filter="url(#softGlow)">
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                      from="0 80 80" to="360 80 80" dur="10s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Triangle décoratif en haut à droite -->
+  <polygon points="320,60 340,90 300,90" fill="#06b6d4" opacity="0.6" filter="url(#softGlow)">
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                      from="0 320 80" to="-360 320 80" dur="12s" repeatCount="indefinite"/>
+  </polygon>
+  
+  <!-- Carré décoratif en bas à gauche -->
+  <rect x="65" y="305" width="20" height="20" fill="#8b5cf6" opacity="0.6" filter="url(#softGlow)" transform="rotate(45 75 315)">
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                      from="45 75 315" to="405 75 315" dur="8s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- Hexagone décoratif en bas à droite -->
+  <polygon points="330,310 340,325 330,340 315,340 305,325 315,310" fill="#ec4899" opacity="0.6" filter="url(#softGlow)">
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                      from="0 322.5 325" to="360 322.5 325" dur="15s" repeatCount="indefinite"/>
+  </polygon>
+  
+  <!-- Design central unifié -->
+  <g transform="translate(200, 200)">
+    <!-- Forme principale - Hexagone central -->
+    <polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="url(#mainGradient)" filter="url(#glow)" opacity="0.9">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                        from="0 0 0" to="360 0 0" dur="20s" repeatCount="indefinite"/>
+    </polygon>
+    
+    <!-- Cercles orbitaux -->
+    <g>
+      <circle cx="0" cy="-80" r="15" fill="#ec4899" filter="url(#softGlow)" opacity="0.8">
+        <animate attributeName="r" values="15;20;15" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="69" cy="-40" r="12" fill="#8b5cf6" filter="url(#softGlow)" opacity="0.8">
+        <animate attributeName="r" values="12;17;12" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="69" cy="40" r="18" fill="#06b6d4" filter="url(#softGlow)" opacity="0.8">
+        <animate attributeName="r" values="18;23;18" dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="0" cy="80" r="14" fill="#f0abfc" filter="url(#softGlow)" opacity="0.8">
+        <animate attributeName="r" values="14;19;14" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-69" cy="40" r="16" fill="#818cf8" filter="url(#softGlow)" opacity="0.8">
+        <animate attributeName="r" values="16;21;16" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-69" cy="-40" r="13" fill="#7dd3fc" filter="url(#softGlow)" opacity="0.8">
+        <animate attributeName="r" values="13;18;13" dur="3.7s" repeatCount="indefinite"/>
+      </circle>
+      
+      <!-- Animation de rotation des cercles orbitaux -->
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                        from="0 0 0" to="360 0 0" dur="30s" repeatCount="indefinite"/>
+    </g>
+    
+    <!-- Triangles internes -->
+    <g opacity="0.7">
+      <polygon points="0,-30 26,-15 -26,-15" fill="#ec4899" filter="url(#softGlow)">
+        <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                          from="0 0 0" to="-360 0 0" dur="15s" repeatCount="indefinite"/>
+      </polygon>
+      <polygon points="0,30 26,15 -26,15" fill="#06b6d4" filter="url(#softGlow)">
+        <animateTransform attributeName="transform" attributeType="XML" type="rotate" 
+                          from="0 0 0" to="360 0 0" dur="18s" repeatCount="indefinite"/>
+      </polygon>
+    </g>
+    
+    <!-- Lignes de connexion -->
+    <g opacity="0.4">
+      <line x1="0" y1="-60" x2="0" y2="-80" stroke="url(#mainGradient)" stroke-width="2" filter="url(#softGlow)"/>
+      <line x1="52" y1="-30" x2="69" y2="-40" stroke="url(#mainGradient)" stroke-width="2" filter="url(#softGlow)"/>
+      <line x1="52" y1="30" x2="69" y2="40" stroke="url(#mainGradient)" stroke-width="2" filter="url(#softGlow)"/>
+      <line x1="0" y1="60" x2="0" y2="80" stroke="url(#mainGradient)" stroke-width="2" filter="url(#softGlow)"/>
+      <line x1="-52" y1="30" x2="-69" y2="40" stroke="url(#mainGradient)" stroke-width="2" filter="url(#softGlow)"/>
+      <line x1="-52" y1="-30" x2="-69" y2="-40" stroke="url(#mainGradient)" stroke-width="2" filter="url(#softGlow)"/>
+      
+      <!-- Animation de pulsation des lignes -->
+      <animate attributeName="opacity" values="0.4;0.1;0.4" dur="4s" repeatCount="indefinite"/>
+    </g>
+    
+    <!-- Carrés décoratifs aux coins -->
+    <rect x="-8" y="-8" width="16" height="16" fill="#8b5cf6" filter="url(#softGlow)" opacity="0.6" transform="rotate(45)">
+      <animate attributeName="opacity" values="0.6;0.3;0.6" dur="5s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  
+  <!-- Bordure subtile -->
+  <rect x="2" y="2" width="396" height="396" fill="none" stroke="url(#mainGradient)" stroke-width="1" opacity="0.3" rx="20"/>
+</svg> 

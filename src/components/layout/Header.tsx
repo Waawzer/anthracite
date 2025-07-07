@@ -146,58 +146,58 @@ export default function Header() {
                 href="/"
                 className="flex flex-col items-start font-bold tracking-tight relative z-10 py-2"
               >
-                <motion.span
-                  className="text-2xl md:text-3xl bg-clip-text text-transparent"
-                  initial={{ x: 0 }}
-                  whileHover={{ scale: 1.05, x: 3 }}
-                  animate={{
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                    textShadow: [
-                      "0 0 15px rgba(6, 182, 212, 0.3)",
-                      "0 0 25px rgba(59, 130, 246, 0.4)",
-                      "0 0 15px rgba(6, 182, 212, 0.3)",
-                    ],
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 25,
-                    backgroundPosition: {
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                    textShadow: {
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                  }}
-                  style={{
-                    background:
-                      "linear-gradient(to right, #06b6d4, #3b82f6, #ec4899)",
-                    backgroundSize: "200% 200%",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    textShadow: "0 0 20px rgba(6, 182, 212, 0.4)",
-                    filter: "brightness(1.2) contrast(1.1)",
-                  }}
-                >
-                  Anthracite
-                </motion.span>
-                <motion.span
-                  className="text-sm md:text-lg ml-auto -mt-1"
-                  initial={{ opacity: 0.7, rotateZ: 0 }}
-                  whileHover={{
-                    scale: 1.1,
-                    opacity: 1,
-                    rotateZ: 0,
-                  }}
-                  animate={{
-                    y: [0, -2, 0],
-                  }}
-                  transition={{
+                  <motion.span
+                    className="text-2xl md:text-3xl bg-clip-text text-transparent"
+                    initial={{ x: 0 }}
+                    whileHover={{ scale: 1.05, x: 3 }}
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                      textShadow: [
+                        "0 0 15px rgba(6, 182, 212, 0.3)",
+                        "0 0 25px rgba(59, 130, 246, 0.4)",
+                        "0 0 15px rgba(6, 182, 212, 0.3)",
+                      ],
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 25,
+                      backgroundPosition: {
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                      textShadow: {
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }}
+                    style={{
+                      background:
+                        "linear-gradient(to right, #06b6d4, #3b82f6, #ec4899)",
+                      backgroundSize: "200% 200%",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      textShadow: "0 0 20px rgba(6, 182, 212, 0.4)",
+                      filter: "brightness(1.2) contrast(1.1)",
+                    }}
+                  >
+                    Anthracite
+                  </motion.span>
+                  <motion.span
+                    className="text-sm md:text-lg ml-auto -mt-1"
+                    initial={{ opacity: 0.7, rotateZ: 0 }}
+                    whileHover={{
+                      scale: 1.1,
+                      opacity: 1,
+                      rotateZ: 0,
+                    }}
+                    animate={{
+                      y: [0, -2, 0],
+                    }}
+                    transition={{
                     scale: {
                       type: "spring",
                       stiffness: 400,

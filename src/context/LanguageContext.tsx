@@ -8,6 +8,7 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  isTransitioning: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -18,6 +19,7 @@ interface LanguageProviderProps {
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('fr');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Load saved language preference from localStorage
   useEffect(() => {
@@ -27,10 +29,22 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     }
   }, []);
 
-  // Save language preference to localStorage
+  // Save language preference to localStorage with transition effect
   const handleSetLanguage = (lang: Language) => {
-    setLanguage(lang);
-    localStorage.setItem('preferred-language', lang);
+    if (lang === language) return;
+    
+    setIsTransitioning(true);
+    
+    // Small delay to show the fade effect
+    setTimeout(() => {
+      setLanguage(lang);
+      localStorage.setItem('preferred-language', lang);
+      
+      // End transition after content is updated
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 150);
+    }, 150);
   };
 
   // Translation function
@@ -43,11 +57,16 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     language,
     setLanguage: handleSetLanguage,
     t,
+    isTransitioning,
   };
 
   return (
     <LanguageContext.Provider value={value}>
-      {children}
+      <div 
+        className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+      >
+        {children}
+      </div>
     </LanguageContext.Provider>
   );
 };
